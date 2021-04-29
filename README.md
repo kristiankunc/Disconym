@@ -1,2 +1,2 @@
-# DiscoNym
-Discord bot that allows you to send anonymous messages to others
+# Disconym
+Discord Bot that allows you to send anonymous messages to others
