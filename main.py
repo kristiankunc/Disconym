@@ -1,34 +1,33 @@
 import discord
 import os
+import json
+from pathlib import Path
 from discord.ext import commands
 
 intents = discord.Intents.default()
 intents.members = True
 
-prefix = "dn"
-client = commands.Bot(command_prefix=prefix, intents=intents)
 
-@client.event
-async def on_ready():
-    await setPresence()
+data_folder = Path("database/")
+prefixes_file = data_folder / "prefixes.json"
 
-    print("-------")
-    print('Logged in with details')
-    print('------')
-    print('Discord bot name is ' + client.user.name)
-    print('------')
-    print('Discord bot id is ' + str(client.user.id))
-    print('------')
+def get_prefix(client, message):
+    with open(prefixes_file, 'r') as f:
+        prefixes = json.load(f)
+    return prefixes[str(message.guild.id)] 
 
-
-def setPresence():
-    return client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="Your anonymous messages"))
-
-
+client = commands.Bot(command_prefix= (get_prefix), intents=intents)
+#client = commands.Bot(command_prefix= ".", intents=intents)
 
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         client.load_extension(f"cogs.{filename[:-3]}")
+
+
+@client.command()
+async def ping(ctx):
+    await ctx.channel.send("Pong")
+
 
 with open("token.txt","r") as f:
     token = f.read()
