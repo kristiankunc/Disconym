@@ -27,27 +27,25 @@ class Prefix(commands.Cog):
         name=f'{prefix}BotBot'
 
 
-        @commands.Cog.listener()
-        async def on_guild_join(self, guild):
-            print("joined")
-            with open('prefixes.json', 'r') as f:
-                prefixes = json.load(f)
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        with open(prefixes_file, 'r') as f:
+            prefixes = json.load(f)
 
-            prefixes[str(self.guild.id)] = 'bl!'
+        prefixes[str(guild.id)] = '.'
 
-            with open('prefixes.json', 'w') as f:
-                json.dump(prefixes, f, indent=4)
+        with open(prefixes_file, 'w') as f:
+            json.dump(prefixes, f, indent=4)
 
-        @commands.Cog.listener()
-        async def on_guild_remove(self, guild):
-            print("left")
-            with open('prefixes.json', 'r') as f:
-                prefixes = json.load(f)
+    @commands.Cog.listener()
+    async def on_guild_remove(self, guild):
+        with open(prefixes_file, 'r') as f:
+            prefixes = json.load(f)
 
-            prefixes.pop(str(self.guild.id))
+        prefixes.pop(str(guild.id))
 
-            with open('prefixes.json', 'w') as f:
-                json.dump(prefixes, f, indent=4)
+        with open(prefixes_file, 'w') as f:
+            json.dump(prefixes, f, indent=4)
 
 def setup(client):
     client.add_cog(Prefix(client))
