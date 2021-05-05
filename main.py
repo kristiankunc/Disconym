@@ -3,32 +3,51 @@ import os
 import json
 from pathlib import Path
 from discord.ext import commands
+import mysql.connector as mysql
 
 intents = discord.Intents.default()
 intents.members = True
 
-data_folder = Path("database/")
-prefixes_file = data_folder / "prefixes.json"
+db_connection = None
+cursor = None
+
+with open("db_data.txt","r") as f:
+    lines = f.readlines()
+    HOST = lines[0]
+    DATABASE = lines[1]
+    USER = lines[2]
+    PASSWORD = lines[3]
+
+def prefix_connect():
+    global db_connection
+    global cursor
+    db_connection = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)
+    cursor = db_connection.cursor()
 
 def get_prefix(client, message):
-    with open(prefixes_file, 'r') as f:
-        prefixes = json.load(f)
-        try:
-            return prefixes[str(message.guild.id)]
-        except:
-            return "!"
+
+    prefix_connect()
+
+    cursor.execute("SELECT * from prefixes")
+    data = cursor.fetchall()
+
+    try:
+        guild_id = message.guild.id
+    except:
+        return "!"
+
+    for row in data:
+        if row[0] == message.guild.id:
+            return str(row[1])
+
+    db_connection.close()
+    cursor.close()
 
 client = commands.Bot(command_prefix= (get_prefix), intents=intents)
 
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         client.load_extension(f"cogs.{filename[:-3]}")
-
-
-@client.command()
-async def ping(ctx):
-    await ctx.channel.send("Pong")
-
 
 with open("token.txt","r") as f:
     token = f.read()
