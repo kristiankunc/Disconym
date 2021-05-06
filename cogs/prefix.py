@@ -18,7 +18,7 @@ db_connection = None
 cursor = None
 
 def remove_prefix(guild_id):
-    prefix_connect()
+    db_connect()
 
     delete_query = f"DELETE FROM prefixes WHERE guild_id = '{int(guild_id)}'"
     cursor.execute(delete_query)
@@ -28,7 +28,7 @@ def remove_prefix(guild_id):
     cursor.close()
     
 def add_prefix(guild_id, prefix):
-    prefix_connect()
+    db_connect()
 
     insert_query = f"INSERT INTO prefixes (guild_id, prefix) VALUES ({int(guild_id)}, '{str(prefix)}')"
     cursor.execute(insert_query)
@@ -37,7 +37,7 @@ def add_prefix(guild_id, prefix):
     db_connection.close()
     cursor.close()
 
-def prefix_connect():
+def db_connect():
     global db_connection
     global cursor
     db_connection = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)
