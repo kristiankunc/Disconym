@@ -18,7 +18,7 @@ with open("db_data.txt","r") as f:
     USER = lines[2]
     PASSWORD = lines[3]
 
-def prefix_connect():
+def db_connect():
     global db_connection
     global cursor
     db_connection = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)
@@ -26,7 +26,7 @@ def prefix_connect():
 
 def get_prefix(client, message):
 
-    prefix_connect()
+    db_connect()
 
     cursor.execute("SELECT * from prefixes")
     data = cursor.fetchall()
