@@ -1,5 +1,4 @@
 import discord
-import json
 from pathlib import Path
 from discord.ext import commands
 import mysql.connector as mysql
