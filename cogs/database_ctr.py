@@ -27,5 +27,18 @@ class Database_ctr(commands.Cog):
 
         await ctx.send(f"Prefix replaced\nGuild ID - {guild_id}\nPrefix - {prefix}")
 
+    
+    @commands.command()
+    async def add_blacklist(self, ctx, user_id, *, reason):
+        Database.add_blacklist(user_id, reason)
+
+        await ctx.send(f"User {user_id} has been blacklisted")
+
+    @commands.command()
+    async def remove_blacklist(self, ctx, user_id):
+        Database.remove_blacklist(user_id)
+
+        await ctx.send(f"User {user_id} has been removed from the blacklist")
+
 def setup(client):
     client.add_cog(Database_ctr(client))

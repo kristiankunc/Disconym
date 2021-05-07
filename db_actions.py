@@ -1,3 +1,4 @@
+import random
 import mysql.connector as mysql
 
 class Database:
@@ -19,11 +20,12 @@ class Database:
         db_connection.close()
         cursor.close()
 
+    # PREFIX
+
     def add_prefix(guild_id, prefix):
         Database.connect(Database())
 
-        insert_query = f"INSERT INTO prefixes (guild_id, prefix) VALUES ({int(guild_id)}, '{str(prefix)}')"
-
+        insert_query = f"INSERT INTO prefixes (guild_id, prefix) VALUES ({int(guild_id)}, '{str(prefix)}');"
         cursor.execute(insert_query)
         db_connection.commit()
 
@@ -32,8 +34,7 @@ class Database:
     def remove_prefix(guild_id):
         Database.connect(Database())
 
-        delete_query = f"DELETE FROM prefixes WHERE guild_id = '{int(guild_id)}'"
-
+        delete_query = f"DELETE FROM prefixes WHERE guild_id = '{int(guild_id)}';"
         cursor.execute(delete_query)
         db_connection.commit()
 
@@ -42,9 +43,28 @@ class Database:
     def replace_prefix(guild_id, prefix):
         Database.connect(Database())
 
-        replace_query = f"UPDATE prefixes SET prefix = '{prefix}' WHERE guild_id = '{guild_id}'"
-
+        replace_query = f"UPDATE prefixes SET prefix = '{prefix}' WHERE guild_id = '{int(guild_id)}';"
         cursor.execute(replace_query)
+        db_connection.commit()
+
+        Database.disconnect()
+
+    # BLACKLIST
+
+    def add_blacklist(user_id, reason):
+        Database.connect(Database())
+
+        insert_query = f"INSERT INTO blacklist (user_id, reason) VALUES ({int(user_id)}, '{reason}');"
+        cursor.execute(insert_query)
+        db_connection.commit()
+
+        Database.disconnect()
+
+    def remove_blacklist(user_id):
+        Database.connect(Database())
+
+        remove_query = f"DELETE FROM blacklist WHERE user_id = '{int(user_id)}';"
+        cursor.execute(remove_query)
         db_connection.commit()
 
         Database.disconnect()
@@ -52,11 +72,9 @@ class Database:
     def find_prefix(guild_id):
         Database.connect(Database())
 
-        cursor.execute("SELECT * from prefixes")
+        cursor.execute(f"SELECT prefix from prefixes where guild_id = '{guild_id}';")
         data = cursor.fetchall()
-
-        for row in data:
-            if row[0] == guild_id:
-                return str(row[1])
+        
+        return data[0]
 
         Database.disconnect()
