@@ -45,7 +45,7 @@ class Database_ctr(commands.Cog):
                 if str(reaction.emoji) == emoji_one:
                     # PREFIX
 
-                    await embed.edit(embed = define_embed("Chose action for Prefix", f"{emoji_one} - add prefix\n{emoji_two} - remove prefix\n{emoji_three} - replace prefix"))
+                    await embed.edit(embed = define_embed("Chose action for Prefix", f"{emoji_one} - Add prefix\n{emoji_two} - remove prefix\n{emoji_three} - replace prefix"))
                     await embed.add_reaction(emoji_one)
                     await embed.add_reaction(emoji_two)
                     await embed.add_reaction(emoji_three)
