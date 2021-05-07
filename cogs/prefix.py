@@ -13,11 +13,6 @@ class Prefix(commands.Cog):
     @commands.has_permissions(administrator=True) 
     async def prefix(self, ctx, prefix):
         Database.replace_prefix(ctx.guild.id, prefix)
-
-        """
-        Database.remove_prefix(ctx.guild.id)
-        Database.add_prefix(ctx.guild.id, prefix)
-        """
         
         await ctx.send(f'Prefix changed to: {prefix}')
 
