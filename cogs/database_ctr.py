@@ -29,9 +29,10 @@ class Database_ctr(commands.Cog):
                 embed.set_footer(text=f"Executed by {ctx.author.name}", icon_url=pfp)
                 return embed
 
-            embed = await ctx.send(embed = define_embed("Chose category", f"{emoji_one} - Prefix\n{emoji_two} - Blacklist"))
+            embed = await ctx.send(embed = define_embed("Chose category", f"{emoji_one} - Prefix\n{emoji_two} - Blacklist\n{emoji_three} - Messages"))
             await embed.add_reaction(emoji_one)
             await embed.add_reaction(emoji_two)
+            await embed.add_reaction(emoji_three)
 
             def check(reaction, user):
                 return user == ctx.author
@@ -146,6 +147,45 @@ class Database_ctr(commands.Cog):
 
                             Database.remove_blacklist(user_id_msg.content)
                             await embed.edit(embed = define_embed("User removed from blacklist", f"User ID - `{user_id_msg.content}`\nUser profile - <@{user_id_msg.content}>"))
+                
+                elif str(reaction.emoji) == emoji_three:
+                    # ---------- MESSAGE LOGS ----------
+
+                    await embed.edit(embed = define_embed("Chose action for Message logs", f"{emoji_one} - Remove message log\n{emoji_two} - Get link of log"))
+
+                    await embed.add_reaction(emoji_one)
+                    await embed.add_reaction(emoji_two)
+
+                    try:
+                        reaction, user = await self.client.wait_for('reaction_add', timeout=15.0, check=check)
+                    except asyncio.TimeoutError:
+                        pass
+                    else:
+                        await embed.clear_reactions()
+
+                        if str(reaction.emoji) == emoji_one:
+                            # ----- REMOVE MESSAGE LOG -----
+
+                            await embed.edit(embed = define_embed("Please send the log ID", f"Example - `12345`"))
+
+                            log_id_msg = await self.client.wait_for("message", check=lambda m:m.author==ctx.author and m.channel.id==ctx.channel.id)
+                            await log_id_msg.delete()
+
+                            Database.remove_log(log_id_msg.content)
+                            await embed.edit(embed = define_embed("Message log has been removed", f"Log ID - `{log_id_msg.content}`"))
+
+                        elif str(reaction.emoji) == emoji_two:
+                            # ----- GET MESSAGE LOG LINK -----
+
+                            await embed.edit(embed = define_embed("Please send the log ID", f"Example - `12345`"))
+
+                            log_id_msg = await self.client.wait_for("message", check=lambda m:m.author==ctx.author and m.channel.id==ctx.channel.id)
+                            await log_id_msg.delete()
+
+                            await embed.edit(embed = define_embed("Message link", f"{Database.get_log(log_id_msg.content)}"))
+
+
+
 
 
 def setup(client):

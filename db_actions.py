@@ -104,7 +104,6 @@ class Database:
 
         if check_id_fetch != 0:
 
-            print("Not found, save shit here")
             insert_query = f"INSERT INTO messages (id, msg_link) VALUES ({int(msg_id)}, '{msg_link}');"
 
             cursor.execute(insert_query)
@@ -114,5 +113,26 @@ class Database:
             Database.add_log(msg_id)
         
         Database.disconnect()
-
+        
         return msg_id
+
+
+    def remove_log(log_id):
+        Database.connect(Database())
+
+        remove_query = f"DELETE FROM messages WHERE id = '{int(log_id)}';"
+        cursor.execute(remove_query)
+        db_connection.commit()
+
+        Database.disconnect()
+
+    
+    def get_log(log_id):
+        Database.connect(Database())
+
+        cursor.execute(f"SELECT msg_link from messages where id = '{log_id}';")
+        data = cursor.fetchall()
+        
+        return data[0]
+
+        Database.disconnect()
