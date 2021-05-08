@@ -17,18 +17,18 @@ class Send(commands.Cog):
                 if target_dm is None:
                     target_dm = await target.create_dm()
 
-                new_msg_embed=discord.Embed(title="New Disconym message", description=input_message, color=0x169cdf)
-                new_msg_embed.set_footer(text="Sent using Disconym - Anynymous Discord messanger")
-                send_msg = await target_dm.send(embed=new_msg_embed)
-
                 log_channel = self.client.get_channel(840519497747398696)
-
                 log_msg = await log_channel.send("⠀")
+
+                msg_id = Database.add_log(log_msg.jump_url)
+                new_msg_embed=discord.Embed(title="New Disconym message", description=f"{input_message}\n━━━━━━━━━━━━━━━\nMessage ID - `{msg_id}`", color=0x169cdf)
+                new_msg_embed.set_footer(text=f"© Disconym 2021")
+                send_msg = await target_dm.send(embed=new_msg_embed)
 
                 embed=discord.Embed(color=0x169cdf)
                 embed.add_field(name="Message data", value=f"Author profile - {ctx.author.mention}\nAuthor name - `{ctx.author.name}`\nAuthor ID - `{ctx.author.id}`\n━━━━━━━━━━━━━━━\nRecipient profile - {target.mention}\nRecipient name - `{target.name}`\nRecipient ID - `{target.id}`", inline=False)
                 embed.add_field(name="Message content", value=f"`{input_message}`")
-                embed.set_footer(text=f"Message ID - {Database.add_log(log_msg.jump_url)}")
+                embed.set_footer(text=f"Message ID - {msg_id}")
 
                 await log_msg.edit(embed=embed)
 
