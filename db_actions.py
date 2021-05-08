@@ -78,3 +78,15 @@ class Database:
         return data[0]
 
         Database.disconnect()
+
+    def check_blacklist(user_id):
+        Database.connect(Database())
+
+        cursor.execute(f"SELECT reason from blacklist where user_id = '{user_id}';")
+        data = cursor.fetchall()
+
+        try:
+            d = data[0]
+
+        except:
+            return False
