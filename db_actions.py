@@ -90,3 +90,29 @@ class Database:
 
         except:
             return False
+
+
+    # LOGGING
+
+    def add_log(msg_link):
+        Database.connect(Database())
+
+        msg_id = random.randint(10000,99999)
+
+        cursor.execute(f'SELECT msg_link FROM messages WHERE id = {msg_id};')
+        check_id_fetch = cursor.fetchone()
+
+        if check_id_fetch != 0:
+
+            print("Not found, save shit here")
+            insert_query = f"INSERT INTO messages (id, msg_link) VALUES ({int(msg_id)}, '{msg_link}');"
+
+            cursor.execute(insert_query)
+            db_connection.commit()
+
+        else:
+            Database.add_log(msg_id)
+        
+        Database.disconnect()
+
+        return msg_id

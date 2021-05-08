@@ -1,39 +1,6 @@
 import discord
-from pathlib import Path
 from discord.ext import commands
-import mysql.connector as mysql
-
-main_folder = Path("/")
-prefixes_file = main_folder / "db_data.txt"
-
-with open("db_data.txt","r") as f:
-    lines = f.readlines()
-    HOST = lines[0]
-    DATABASE = lines[1]
-    USER = lines[2]
-    PASSWORD = lines[3]
-
-db_connection = None
-cursor = None
-
-def find_user_blacklist(user_id):
-    prefix_connect()
-    
-    cursor.execute("SELECT * from blacklist")
-    data = cursor.fetchall()
-
-    for row in data:
-        if row[0] == user_id:
-            return True
-
-    db_connection.close()
-    cursor.close()
-
-def prefix_connect():
-    global db_connection
-    global cursor
-    db_connection = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)
-    cursor = db_connection.cursor()
+from db_actions import Database
 
 class Send(commands.Cog):
 
@@ -45,21 +12,30 @@ class Send(commands.Cog):
 
         if isinstance(ctx.channel, discord.channel.DMChannel):
 
-            if find_user_blacklist(ctx.author.id) == True:
-                await ctx.send("Error, you are blacklisted from sending Disconym messages")
-
-            else:
+            if Database.check_blacklist(ctx.author.id) == False:
                 target_dm = target.dm_channel
                 if target_dm is None:
                     target_dm = await target.create_dm()
 
-                embed=discord.Embed(title="New Disconym message", description=input_message, color=0x169cdf)
-                embed.set_footer(text="Sent using Disconym - Anynymous Discord messanger")
-                send_msg = await target_dm.send(embed=embed)
+                new_msg_embed=discord.Embed(title="New Disconym message", description=input_message, color=0x169cdf)
+                new_msg_embed.set_footer(text="Sent using Disconym - Anynymous Discord messanger")
+                send_msg = await target_dm.send(embed=new_msg_embed)
+
+                log_channel = self.client.get_channel(840519497747398696)
+
+                log_msg = await log_channel.send("⠀")
+
+                embed=discord.Embed(color=0x169cdf)
+                embed.add_field(name="Message data", value=f"Author profile - {ctx.author.mention}\nAuthor name - `{ctx.author.name}`\nAuthor ID - `{ctx.author.id}`\n━━━━━━━━━━━━━━━\nRecipient profile - {target.mention}\nRecipient name - `{target.name}`\nRecipient ID - `{target.id}`", inline=False)
+                embed.add_field(name="Message content", value=f"`{input_message}`")
+                embed.set_footer(text=f"Message ID - {Database.add_log(log_msg.jump_url)}")
+
+                await log_msg.edit(embed=embed)
 
                 await ctx.send(f"Message to {target.mention} has been delivered succesfully ")
 
-                await send_msg.add_reaction("❌")
+            else:
+                await ctx.send("Error, you are blacklisted from sending Disconym messages")
 
 
 def setup(client):
