@@ -14,7 +14,7 @@ def get_prefix(client, message):
     else:
         return Database.find_prefix(message.guild.id)
 
-client = commands.Bot(command_prefix= (get_prefix), intents=intents)
+client = commands.Bot(command_prefix= (get_prefix), intents=intents, case_insensitive=True)
 
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
@@ -22,6 +22,5 @@ for filename in os.listdir("./cogs"):
 
 with open("token.txt","r") as f:
     token = f.read()
-
 
 client.run(token)
