@@ -22,7 +22,7 @@ class Send(commands.Cog):
 
                 msg_id = Database.add_log(log_msg.jump_url)
                 new_msg_embed=discord.Embed(title="New Disconym message", description=f"{input_message}\n━━━━━━━━━━━━━━━\nMessage ID - `{msg_id}`", color=0x169cdf)
-                new_msg_embed.set_footer(text=f"© Disconym 2021")
+                new_msg_embed.set_footer(text=f"© Disconym")
                 send_msg = await target_dm.send(embed=new_msg_embed)
 
                 embed=discord.Embed(color=0x169cdf)
