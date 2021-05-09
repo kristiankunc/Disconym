@@ -11,7 +11,7 @@ class Ping(commands.Cog):
     @commands.command()
     async def ping(self, ctx):
         embed=discord.Embed(color=0x08ccfd)
-        embed.add_field(name="Pong", value=f"Latency is {round(self.client.latency * 1000)}ms", inline=False)
+        embed.add_field(name="Pong", value=f"Latency is `{round(self.client.latency * 1000)}`ms", inline=False)
         embed.set_footer(text="© Disconym")
         await ctx.send(embed=embed)
 
