@@ -42,7 +42,7 @@ class Database_ctr(commands.Cog):
             except asyncio.TimeoutError:
                 pass
             else:
-                await embed.clear_reactions()
+                await embed.remove_reaction(reaction.emoji, author)
                 if str(reaction.emoji) == emoji_one:
                     # PREFIX
 
