@@ -8,6 +8,7 @@ class Send(commands.Cog):
         self.client = client
 
     @commands.command()
+    @commands.dm_only()
     async def send(self, ctx, target: discord.Member, *, input_message):
 
         if isinstance(ctx.channel, discord.channel.DMChannel):
@@ -36,7 +37,6 @@ class Send(commands.Cog):
 
             else:
                 await ctx.send("Error, you are blacklisted from sending Disconym messages")
-
 
 def setup(client):
     client.add_cog(Send(client))
