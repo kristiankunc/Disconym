@@ -1,6 +1,4 @@
 import discord
-import json
-from pathlib import Path
 from discord.ext import commands
 
 class Ping(commands.Cog):
