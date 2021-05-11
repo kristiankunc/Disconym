@@ -25,8 +25,8 @@ class Database:
     def add_prefix(guild_id, prefix):
         Database.connect(Database())
 
-        insert_query = f"INSERT INTO prefixes (guild_id, prefix) VALUES ({int(guild_id)}, '{str(prefix)}');"
-        cursor.execute(insert_query)
+        insert_query = "INSERT INTO prefixes (guild_id, prefix) VALUES (%s, %s);"
+        cursor.execute(insert_query, (int(guild_id), str(prefix),))
         db_connection.commit()
 
         Database.disconnect()
@@ -34,8 +34,8 @@ class Database:
     def remove_prefix(guild_id):
         Database.connect(Database())
 
-        delete_query = f"DELETE FROM prefixes WHERE guild_id = '{int(guild_id)}';"
-        cursor.execute(delete_query)
+        delete_query = "DELETE FROM prefixes WHERE guild_id = %s;"
+        cursor.execute(delete_query, (int(guild_id),))
         db_connection.commit()
 
         Database.disconnect()
@@ -43,8 +43,8 @@ class Database:
     def replace_prefix(guild_id, prefix):
         Database.connect(Database())
 
-        replace_query = f"UPDATE prefixes SET prefix = '{prefix}' WHERE guild_id = '{int(guild_id)}';"
-        cursor.execute(replace_query)
+        replace_query = "UPDATE prefixes SET prefix = %s WHERE guild_id = %s;"
+        cursor.execute(replace_query, (str(prefix), int(guild_id),))
         db_connection.commit()
 
         Database.disconnect()
@@ -54,8 +54,8 @@ class Database:
     def add_blacklist(user_id, reason):
         Database.connect(Database())
 
-        insert_query = f"INSERT INTO blacklist (user_id, reason) VALUES ({int(user_id)}, '{reason}');"
-        cursor.execute(insert_query)
+        insert_query = "INSERT INTO blacklist (user_id, reason) VALUES (%s, %s);"
+        cursor.execute(insert_query, ( int(user_id), str(reason),))
         db_connection.commit()
 
         Database.disconnect()
@@ -63,8 +63,8 @@ class Database:
     def remove_blacklist(user_id):
         Database.connect(Database())
 
-        remove_query = f"DELETE FROM blacklist WHERE user_id = '{int(user_id)}';"
-        cursor.execute(remove_query)
+        remove_query = "DELETE FROM blacklist WHERE user_id = '%s';"
+        cursor.execute(remove_query, (int(user_id),))
         db_connection.commit()
 
         Database.disconnect()
@@ -72,7 +72,8 @@ class Database:
     def find_prefix(guild_id):
         Database.connect(Database())
 
-        cursor.execute(f"SELECT prefix from prefixes where guild_id = '{guild_id}';")
+        find_query = "SELECT prefix from prefixes where guild_id = %s;"
+        cursor.execute(find_query, (int(guild_id),))
         data = cursor.fetchall()
         
         return data[0]
@@ -82,7 +83,8 @@ class Database:
     def check_blacklist(user_id):
         Database.connect(Database())
 
-        cursor.execute(f"SELECT reason from blacklist where user_id = '{user_id}';")
+        check_query = "SELECT reason FROM blacklist WHERE user_id = %s;"
+        cursor.execute(check_query, (int(user_id),))
         data = cursor.fetchall()
 
         try:
@@ -99,14 +101,14 @@ class Database:
 
         msg_id = random.randint(10000,99999)
 
-        cursor.execute(f'SELECT msg_link FROM messages WHERE id = {msg_id};')
+        cursor.execute("SELECT msg_link FROM messages WHERE id = (%s);", (int(msg_id),))
         check_id_fetch = cursor.fetchone()
 
         if check_id_fetch != 0:
 
-            insert_query = f"INSERT INTO messages (id, msg_link) VALUES ({int(msg_id)}, '{msg_link}');"
+            insert_query = "INSERT INTO messages (id, msg_link) VALUES (%s, %s);"
 
-            cursor.execute(insert_query)
+            cursor.execute(insert_query, (int(msg_id), str(msg_link),))
             db_connection.commit()
 
         else:
@@ -120,8 +122,8 @@ class Database:
     def remove_log(log_id):
         Database.connect(Database())
 
-        remove_query = f"DELETE FROM messages WHERE id = '{int(log_id)}';"
-        cursor.execute(remove_query)
+        remove_query = "DELETE FROM messages WHERE id = '%s';"
+        cursor.execute(remove_query, (int(log_id),))
         db_connection.commit()
 
         Database.disconnect()
@@ -130,7 +132,7 @@ class Database:
     def get_log(log_id):
         Database.connect(Database())
 
-        cursor.execute(f"SELECT msg_link from messages where id = '{log_id}';")
+        cursor.execute("SELECT msg_link from messages where id = '%s';", (int(log_id),))
         data = cursor.fetchall()
         
         return data[0]
