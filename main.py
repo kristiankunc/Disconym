@@ -16,6 +16,8 @@ def get_prefix(client, message):
 
 client = commands.Bot(command_prefix= (get_prefix), intents=intents, case_insensitive=True)
 
+client.remove_command('help')
+
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         client.load_extension(f"cogs.{filename[:-3]}")
