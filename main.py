@@ -22,6 +22,12 @@ for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         client.load_extension(f"cogs.{filename[:-3]}")
 
+
+@client.event
+async def on_command_error(ctx, error):
+    await ctx.send(f"ERROR - `{error}`")
+
+
 with open("token.txt","r") as f:
     token = f.read()
 
