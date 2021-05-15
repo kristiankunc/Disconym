@@ -1,6 +1,10 @@
 import discord
+import asyncio
+from discord import user
 from discord.ext import commands
 from db_actions import Database
+
+user_cache = []
 
 class Report(commands.Cog):
 
@@ -8,22 +12,30 @@ class Report(commands.Cog):
         self.client = client
 
     @commands.command()
-    async def report(self, ctx, log_id, reason):
-        author = ctx.message.author
-        pfp = author.avatar_url
+    async def report(self, ctx, log_id, reason=None):
+        if ctx.author.id in user_cache:
+            await ctx.send("You are spamming, slow down please")
 
-        reports_channel = self.client.get_channel(840568536542871572)
+        else:
+            user_cache.append(ctx.author.id)
+            author = ctx.message.author
+            pfp = author.avatar_url
 
-        report_embed=discord.Embed(color=0x341aff)
-        report_embed.add_field(name="New report submitted", value=f"Report author profile - {ctx.author.mention}\nReport author name - `{ctx.author.name}`\nReport author ID - `{ctx.author.id}`\nReport reason - `{reason}`", inline=False)
-        report_embed.add_field(name="Message data", value=f"Message ID - `{log_id}`\nMessage log link - {Database.get_log(log_id)[0]}")
-        report_msg = await reports_channel.send(embed=report_embed)
+            reports_channel = self.client.get_channel(840568536542871572)
 
-        await report_msg.add_reaction("✅")
+            report_embed=discord.Embed(color=0x341aff)
+            report_embed.add_field(name="New report submitted", value=f"Report author profile - {ctx.author.mention}\nReport author name - `{ctx.author.name}`\nReport author ID - `{ctx.author.id}`\nReport reason - `{reason}`", inline=False)
+            report_embed.add_field(name="Message data", value=f"Message ID - `{log_id}`\nMessage log link - {Database.get_log(log_id)[0]}")
+            report_msg = await reports_channel.send(embed=report_embed)
 
-        report_embed=discord.Embed(title ="Report Submitted", description ="Your report has been submitted and will be reviewed by the moderation team", color=0x341aff)
-        report_embed.set_footer(text=f"© Disconym")
-        await ctx.channel.send(embed=report_embed)
+            await report_msg.add_reaction("✅")
+
+            report_embed=discord.Embed(title ="Report Submitted", description ="Your report has been submitted and will be reviewed by the moderation team", color=0x341aff)
+            report_embed.set_footer(text=f"© Disconym")
+            await ctx.channel.send(embed=report_embed)
+
+            await asyncio.sleep(300)
+            user_cache.remove(ctx.author.id)
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
