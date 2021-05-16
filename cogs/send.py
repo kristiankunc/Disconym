@@ -18,7 +18,7 @@ class Send(commands.Cog):
         if isinstance(ctx.channel, discord.channel.DMChannel):
 
             if ctx.author.id in user_cache:
-                await ctx.send("You are spamming, slow down please")
+                await ctx.send("Please wait before sending another message.")
 
             else:
                 user_cache.append(ctx.author.id)

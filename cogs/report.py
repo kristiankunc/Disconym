@@ -14,7 +14,7 @@ class Report(commands.Cog):
     @commands.command()
     async def report(self, ctx, log_id, reason=None):
         if ctx.author.id in user_cache:
-            await ctx.send("You are spamming, slow down please")
+            await ctx.send("Please wait before submitting another report")
 
         else:
             user_cache.append(ctx.author.id)
