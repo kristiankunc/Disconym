@@ -1,4 +1,5 @@
 import discord
+import datetime
 from discord.ext import commands
 
 class Ping(commands.Cog):
@@ -11,6 +12,7 @@ class Ping(commands.Cog):
         embed=discord.Embed(color=0x08ccfd)
         embed.add_field(name="Pong", value=f"Latency is `{round(self.client.latency * 1000)}`ms", inline=False)
         embed.set_footer(text="© Disconym")
+        embed.timestamp = datetime.datetime.now()
         await ctx.send(embed=embed)
 
 def setup(client):

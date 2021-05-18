@@ -1,5 +1,6 @@
 import discord
 import asyncio
+import datetime
 from db_actions import Database
 from discord.ext import commands
 
@@ -42,7 +43,8 @@ class Help(commands.Cog):
             values_loop = 0
 
             embed=discord.Embed(title=title, description=descriptionn, color=0x169cdf)
-            embed.set_footer(text="© Disconym")
+            embed.set_footer(text=f"©️ {self.client.user.name}")
+            embed.timestamp = datetime.datetime.now()
 
             while fields > 0:
                 embed.add_field(name=values_list[values_loop], value=values_list[values_loop+1], inline=False)

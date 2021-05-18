@@ -1,5 +1,6 @@
 import discord
 import asyncio
+import datetime
 from discord import user
 from discord.ext import commands
 from db_actions import Database
@@ -31,7 +32,8 @@ class Report(commands.Cog):
             await report_msg.add_reaction("✅")
 
             report_embed=discord.Embed(title ="Report Submitted", description ="Your report has been submitted and will be reviewed by the moderation team", color=0x341aff)
-            report_embed.set_footer(text=f"© Disconym")
+            report_embed.set_footer(text=f"©️ {self.client.user.name}")
+            report_embed.timestamp = datetime.datetime.now()
             await ctx.channel.send(embed=report_embed)
 
             await asyncio.sleep(300)
