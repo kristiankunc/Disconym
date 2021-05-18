@@ -24,19 +24,19 @@ class Help(commands.Cog):
             if category == 0:
                 title = "Help Menu"
                 descriptionn = "Use reactions to get more info about a category"
-                field_vaulues = "🤖 General Commands__Other - not so useful commands__✍️ Sending Messages__Main feature of the bot__📕 Reporting Users__How to report a user"
+                field_vaulues = "🤖 General Commands__Other - not so useful commands__✍️ Sending Messages__Main feature of the bot__📕 Reporting Users__How to report and block user"
             elif category == 1:
                 title = "🤖 General Commands"
                 descriptionn = "General commands desc\narguments in () are required, and <> are optional"
-                field_vaulues = f"Latency__{prefix}ping__Prefix__{prefix}prefix (new_prefix)"
+                field_vaulues = f"Latency__`{prefix}ping`__Prefix__`{prefix}prefix (new_prefix)`"
             elif category == 2:
                 title = "✍️ Sending messages"
                 descriptionn = "How to send a new message to user\narguments in () are required, and <> are optional"
-                field_vaulues = f"Send__{prefix}send (@userser) (message)\n*must be executed in bot's private messages*"
+                field_vaulues = f"Send__`{prefix}send (Usernam#tag) (message)`\n*must be executed in bot's private messages*"
             elif category == 3:
                 title = "📕 Reporting Users"
                 descriptionn = "How to report a user\narguments in () are required, and <> are optional"
-                field_vaulues = f"Submit a report__{prefix}report (message_id) <reason>"
+                field_vaulues = f"Submit a report__`{prefix}report (message_id) <reason>`"
 
             values_list = field_vaulues.split("__")
             values_loop = 0
@@ -66,7 +66,7 @@ class Help(commands.Cog):
 
         while True:
             try:
-                reaction, user = await self.client.wait_for('reaction_add', timeout=15.0, check=check)
+                reaction, user = await self.client.wait_for('reaction_add', timeout=25.0, check=check)
             except asyncio.TimeoutError:
                 break
             else:
