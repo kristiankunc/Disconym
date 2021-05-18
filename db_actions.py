@@ -75,10 +75,10 @@ class Database:
         find_query = "SELECT prefix from prefixes where guild_id = %s;"
         cursor.execute(find_query, (int(guild_id),))
         data = cursor.fetchall()
-        
+        Database.disconnect()
+
         return data[0]
 
-        Database.disconnect()
 
     def check_blacklist(user_id):
         Database.connect(Database())
