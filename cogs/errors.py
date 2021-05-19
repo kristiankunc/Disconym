@@ -26,13 +26,8 @@ class Errors(commands.Cog):
         for command in self.client.commands:
             command_list.append(command.name)
 
-        def genEmbed(error_code):
-            error_responses =   [f"Command **{command_name}** not found!\n{suggestCommand(command_name)}", 
-                                f"Command **{command_name}** can be only used in private messages!",
-                                f"Missing required argument!\nUse `{prefix}help` for the correct syntax",
-                                f"You are missing permissions to run **{command_name}**"]
-
-            embed=discord.Embed(title="Error", description=error_responses[error_code], color=0xff1f1f)
+        def genEmbed(error_response):
+            embed=discord.Embed(title="Error", description=error_response, color=0xff1f1f)
             embed.set_footer(text=f"©️ {self.client.user.name}")
             embed.timestamp = datetime.datetime.now()
             return embed
@@ -44,13 +39,15 @@ class Errors(commands.Cog):
                 return f"You can try `{prefix}help`"
 
         if isinstance(error, commands.CommandNotFound):
-            await ctx.send(embed=genEmbed(0))
+            await ctx.send(embed=genEmbed(f"Command **{command_name}** not found!\n{suggestCommand(command_name)}"))
         elif isinstance(error, commands.PrivateMessageOnly):
-            await ctx.send(embed=genEmbed(1))
+            await ctx.send(embed=genEmbed(f"Command **{command_name}** can be only used in private messages!"))
         elif isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(embed=genEmbed(2))
+            await ctx.send(embed=genEmbed(f"Missing required argument!\nUse `{prefix}help` for the correct syntax"))
         elif isinstance(error, MissingPermissions):
-            await ctx.send(embed=genEmbed(3))
+            await ctx.send(embed=genEmbed(f"You are missing permissions to run **{command_name}**"))
+        elif isinstance(error, commands.MemberNotFound):
+            await ctx.send(embed=genEmbed(f"Member **{ctx.message.content.split(' ')[1]}** not found"))
 
         else:
             print(error)
