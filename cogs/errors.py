@@ -3,6 +3,7 @@ import difflib
 import datetime
 
 from discord import embeds
+from discord.ext.commands.errors import MissingPermissions
 from db_actions import Database
 from discord.ext import commands
 
@@ -11,36 +12,48 @@ class Errors(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
-    async def ok(self, ctx):
-        for command in self.client.commands:
-            print(command)
-
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         command_list = []
-        command_name = ctx.message.content.split(' ')[0].replace(Database.find_prefix(ctx.guild.id)[0], '')
+
+        if ctx.guild != None:
+            prefix = Database.find_prefix(ctx.guild.id)[0]
+        else:
+            prefix = "!"
+
+        command_name = ctx.message.content.split(' ')[0].replace(prefix, '')
 
         for command in self.client.commands:
             command_list.append(command.name)
 
         def genEmbed(error_code):
-            error_responses = [f"Command **{command_name}** not found!\n{suggestCommand(command_name)}"]
+            error_responses =   [f"Command **{command_name}** not found!\n{suggestCommand(command_name)}", 
+                                f"Command **{command_name}** can be only used in private messages!",
+                                f"Missing required argument!\nUse `{prefix}help` for the correct syntax",
+                                f"You are missing permissions to run **{command_name}**"]
 
-            embed=discord.Embed(color=0xff1f1f)
-            embed.add_field(name="Error", value=error_responses[error_code], inline=False)
+            embed=discord.Embed(title="Error", description=error_responses[error_code], color=0xff1f1f)
             embed.set_footer(text=f"©️ {self.client.user.name}")
             embed.timestamp = datetime.datetime.now()
             return embed
 
         def suggestCommand(user_input):
             try:
-                return f"Did you mean `{difflib.get_close_matches(user_input, command_list)[0]}`?"
+                return f"Did you mean `{prefix}{difflib.get_close_matches(user_input, command_list)[0]}`?"
             except:
-                return "You can try `help`"
+                return f"You can try `{prefix}help`"
 
         if isinstance(error, commands.CommandNotFound):
             await ctx.send(embed=genEmbed(0))
+        elif isinstance(error, commands.PrivateMessageOnly):
+            await ctx.send(embed=genEmbed(1))
+        elif isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(embed=genEmbed(2))
+        elif isinstance(error, MissingPermissions):
+            await ctx.send(embed=genEmbed(3))
+
+        else:
+            print(error)
 
 def setup(client):
     client.add_cog(Errors(client))
