@@ -15,20 +15,23 @@ class Send(commands.Cog):
     @commands.command()
     @commands.dm_only()
     async def send(self, ctx, target: discord.Member, *, input_message):
+        if ctx.author.id in user_cache:
+            await ctx.send("Please wait before sending another message.")
 
-        if isinstance(ctx.channel, discord.channel.DMChannel):
+        elif ctx.author == target:
+            await ctx.send("You can't send messages to yourself :(")
 
-            if ctx.author.id in user_cache:
-                await ctx.send("Please wait before sending another message.")
+        elif input_message == None:
+            await ctx.send("You can not send an empty message")
+                
+        else:
+            user_cache.append(ctx.author.id)
 
-            else:
-                user_cache.append(ctx.author.id)
+            if Database.check_blacklist(ctx.author.id) == False:
+                target_dm = target.dm_channel
 
-                if Database.check_blacklist(ctx.author.id) == False:
-                    target_dm = target.dm_channel
-
-                    if target_dm is None:
-                        target_dm = await target.create_dm()
+                if target_dm is None:
+                    target_dm = await target.create_dm()
 
                     log_channel = self.client.get_channel(840519497747398696)
                     log_msg = await log_channel.send("⠀")
@@ -51,8 +54,8 @@ class Send(commands.Cog):
                     await asyncio.sleep(60)
                     user_cache.remove(ctx.author.id)
 
-                else:
-                    await ctx.send("Error, you are blacklisted from sending Disconym messages")
+            else:
+                await ctx.send("Error, you are blacklisted from sending Disconym messages")
 
 def setup(client):
     client.add_cog(Send(client))
