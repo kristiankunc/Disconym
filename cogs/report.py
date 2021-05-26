@@ -1,9 +1,10 @@
 import discord
 import asyncio
 import datetime
-from discord import user
 from discord.ext import commands
 from db_actions import Database
+from discord_slash import cog_ext, SlashContext
+from discord_slash.utils.manage_commands import create_option
 
 user_cache = []
 
@@ -12,14 +13,37 @@ class Report(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @cog_ext.cog_slash  (name="report",
+                        description="Report user for violation of the rules",
+                        options=[
+                            create_option(
+                            name="message_id",
+                            description="ID of the message you want to report",
+                            option_type=4,
+                            required=True
+                            ),
+
+                            create_option(
+                            name="reason",
+                            description="Reason for the report",
+                            option_type=3,
+                            required=False
+                            )
+                        ])
+
+    async def _report(self, ctx: SlashContext, message_id: int, reason: str = None):
+        print(ctx.author)
+        await self.report(ctx, message_id, reason)
+
     @commands.command()
     async def report(self, ctx, log_id, reason=None):
+        
         if ctx.author.id in user_cache:
             await ctx.send("Please wait before submitting another report")
 
         else:
             user_cache.append(ctx.author.id)
-            author = ctx.message.author
+            author = ctx.author
             pfp = author.avatar_url
 
             reports_channel = self.client.get_channel(840568536542871572)
@@ -34,7 +58,7 @@ class Report(commands.Cog):
             report_embed=discord.Embed(title ="Report Submitted", description ="Your report has been submitted and will be reviewed by the moderation team", color=0x341aff)
             report_embed.set_footer(text=f"©️ {self.client.user.name}")
             report_embed.timestamp = datetime.datetime.now()
-            await ctx.channel.send(embed=report_embed)
+            await ctx.send(embed=report_embed)
 
             await asyncio.sleep(300)
             user_cache.remove(ctx.author.id)
