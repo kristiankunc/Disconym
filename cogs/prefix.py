@@ -1,11 +1,26 @@
 import discord
 from discord.ext import commands
 from db_actions import Database
+from discord_slash import cog_ext, SlashContext
+from discord_slash.utils.manage_commands import create_option
 
 class Prefix(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+
+    @cog_ext.cog_slash  (name="prefix",
+                        description="Change the prefix for this guild",
+                        options=[
+                            create_option(
+                            name="prefix",
+                            description="Your desired prefix",
+                            option_type=3,
+                            required=True
+                            )
+                        ])
+    async def _prefix(self, ctx: SlashContext, prefix: str):
+        await self.prefix(ctx, prefix)
 
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True) 
