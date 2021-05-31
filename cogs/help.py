@@ -3,10 +3,15 @@ import asyncio
 import datetime
 from db_actions import Database
 from discord.ext import commands
+from discord_slash import cog_ext, SlashContext
 
 class Help(commands.Cog):
     def __init__(self, client):
         self.client = client
+
+    @cog_ext.cog_slash(name="help", description="Show all the commands and their syntax")
+    async def _help(self, ctx: SlashContext):
+        await self.help(ctx)
 
     @commands.command()
     async def help(self, ctx):
