@@ -40,21 +40,21 @@ mysql_password
 
 #### 4. Create all needed MySQL databse and tables
 
-4.1 create disconym database and switch to it
+ - 4.1 create disconym database and switch to it
 ```bash
 $ CREATE DATABASE disconym;
 $ USE disconym;
 ```
 
- - 4.1 Create the blacklist table
+ - 4.2 Create the blacklist table
 ```bash
 $ CREATE TABLE blacklist(userid BIGINT, reason VARCHAR(256));
 ```
- - 4.2 Create the messages table
+ - 4.3 Create the messages table
 ```bash
 $ CREATE TABLE blacklist(id BIGINT, msg_link VARCHAR(148));
 ```
- - 4.3 create the prefixes table
+ - 4.4 create the prefixes table
 ```bash
 $ CREATE TABLE blacklist(guild_id BIGINT, prefix STR);
 ```
