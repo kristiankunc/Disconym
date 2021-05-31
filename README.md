@@ -48,15 +48,15 @@ $ USE disconym;
 
  - 4.1 Create the blacklist table
 ```bash
-$ CREATE TABLE blacklist(userid BIGINT, reason VARCHAR(256))
+$ CREATE TABLE blacklist(userid BIGINT, reason VARCHAR(256));
 ```
  - 4.2 Create the messages table
 ```bash
-$ CREATE TABLE blacklist(id BIGINT, msg_link VARCHAR(148))
+$ CREATE TABLE blacklist(id BIGINT, msg_link VARCHAR(148));
 ```
  - 4.3 create the prefixes table
 ```bash
-$ CREATE TABLE blacklist(guild_id BIGINT, prefix STR)
+$ CREATE TABLE blacklist(guild_id BIGINT, prefix STR);
 ```
 
 #### 4. run main.py
