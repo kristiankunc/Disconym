@@ -11,7 +11,7 @@
     <img src="https://img.shields.io/website-up-down-green-red/http/cv.lbesson.qc.to.svg" alt="discord - users online" />
   </a>
   <img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg">
-  <img src="https://img.shields.io/discord/849290134809608212.svg?color=7289da&label=Discord server&logo=discord&style=flat-square)](https://discord.gg/6YYF68zzPK)">
+  <img src="https://img.shields.io/discord/849290134809608212.svg?color=7289da&label=Discord%20server&logo=discord&style=flat-square)](https://discord.gg/6YYF68zzPK)">
 </p>
 
 <h3 align="center">
