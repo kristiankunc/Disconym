@@ -86,7 +86,9 @@ log_channel = self.client.get_channel(your_channel_id)
 
 And line **49** in `report.py`
 
+```py
 reports_channel = self.client.get_channel(your_channel_id)
+```
 
 #### 6. Run main.py
 ```bash
