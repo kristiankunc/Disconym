@@ -1,5 +1,9 @@
 # Disconym
 
+![Disconym logo](https://github.com/KristN1/Disconym/blob/main/imgs/main_logo.png?raw=true=100x100)
+
+<img src="https://github.com/KristN1/Disconym/blob/main/imgs/main_logo.png?raw=true" width="100" height="100">
+
 Disconym is a Discord bot that allows you to send anonymous messages to other users
 
 ## Features
