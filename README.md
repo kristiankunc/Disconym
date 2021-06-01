@@ -1,10 +1,30 @@
-# Disconym
-
 <p align="center">
-  <img width="400" height="400" src="https://github.com/KristN1/Disconym/blob/main/imgs/main_logo.png?raw=true">
+  <img width="400" height="400" src="https://github.com/KristN1/Disconym/blob/main/imgs/logo-circle.png?raw=true" alt="Disconym Logo Circle" />
 </p>
 
-Disconym is a Discord bot that allows you to send anonymous messages to other users
+<p align="center">
+  <strong>Disconym - Discord bot for sending anonymous messages</strong>
+</p>
+
+<p align="center">
+  <a href="https://discord.gg/123456">
+    <img src="https://img.shields.io/website-up-down-green-red/http/cv.lbesson.qc.to.svg" alt="discord - users online" />
+  </a>
+  <img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg">
+  <img src="https://img.shields.io/discord/849290134809608212.svg?color=7289da&label=Discord server&logo=discord&style=flat-square)](https://discord.gg/6YYF68zzPK)">
+</p>
+
+<h3 align="center">
+  <a href="https://discord.gg/6YYF68zzPK">Discord server - <i>soon</i></a>
+  <span> · </span>
+  <a href="https://discord.gg/123456">Bot invite - <i>soon</i></a>
+  <span> · </span>
+  <a href="https://kristn.tech">Website - <i>soon</i></a>
+</h3>
+
+---
+
+# Disconym
 
 ## Features
 
