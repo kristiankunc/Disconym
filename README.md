@@ -15,7 +15,7 @@
 </p>
 
 <h3 align="center">
-  <a href="https://discord.gg/6YYF68zzPK">Discord server - <i>soon</i></a>
+  <a href="https://discord.gg/6YYF68zzPK">Discord server</a>
   <span> · </span>
   <a href="https://discord.gg/123456">Bot invite - <i>soon</i></a>
   <span> · </span>
@@ -78,7 +78,17 @@ $ CREATE TABLE blacklist(id BIGINT, msg_link VARCHAR(148));
 $ CREATE TABLE blacklist(guild_id BIGINT, prefix STR);
 ```
 
-#### 4. run main.py
+#### 5 Edit logging channels
+Edit line **61** in `send.py`
+```py
+log_channel = self.client.get_channel(your_channel_id)
+```
+
+And line **49** in `report.py`
+
+reports_channel = self.client.get_channel(your_channel_id)
+
+#### 6. Run main.py
 ```bash
 $ python main.py
 ```
