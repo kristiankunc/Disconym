@@ -34,11 +34,6 @@
 - Full support of slash commands
 
 *more features soon*
- 
-## Official bot sites
-
-- Bot invite - *Comming with full release*
-- top.gg - *Comming with full release* 
 
 ## Running on local
 
