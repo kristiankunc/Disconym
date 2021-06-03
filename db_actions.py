@@ -1,19 +1,29 @@
 import random
 import mysql.connector as mysql
 
-class Database:
-    def __init__(self):
-        with open("db_data.txt","r") as f:
-            lines = f.readlines()
-            self.host = lines[0]
-            self.database = lines[1]
-            self.user = lines[2]
-            self.password = lines[3]
+host = None
+database = None
+user = None
+password = None
 
-    def connect(self):
+class Database:
+    def connect():
+        global host
+        global database
+        global user
+        global password
+
+        if host == None:
+            with open("db_data.txt","r") as f:
+                lines = f.readlines()
+                host = lines[0]
+                database = lines[1]
+                user = lines[2]
+                password = lines[3]
+
         global db_connection
         global cursor
-        db_connection = mysql.connect(host=self.host, database=self.database, user=self.user, password=self.password)
+        db_connection = mysql.connect(host=host, database=database, user=user, password=password)
         cursor = db_connection.cursor()
 
     def disconnect():
@@ -23,7 +33,7 @@ class Database:
     # PREFIX
 
     def add_prefix(guild_id, prefix):
-        Database.connect(Database())
+        Database.connect()
 
         insert_query = "INSERT INTO prefixes (guild_id, prefix) VALUES (%s, %s);"
         cursor.execute(insert_query, (int(guild_id), str(prefix),))
@@ -32,7 +42,7 @@ class Database:
         Database.disconnect()
 
     def remove_prefix(guild_id):
-        Database.connect(Database())
+        Database.connect()
 
         delete_query = "DELETE FROM prefixes WHERE guild_id = %s;"
         cursor.execute(delete_query, (int(guild_id),))
@@ -41,7 +51,7 @@ class Database:
         Database.disconnect()
 
     def replace_prefix(guild_id, prefix):
-        Database.connect(Database())
+        Database.connect()
 
         replace_query = "UPDATE prefixes SET prefix = %s WHERE guild_id = %s;"
         cursor.execute(replace_query, (str(prefix), int(guild_id),))
@@ -52,7 +62,7 @@ class Database:
     # BLACKLIST
 
     def add_blacklist(user_id, reason):
-        Database.connect(Database())
+        Database.connect()
 
         insert_query = "INSERT INTO blacklist (user_id, reason) VALUES (%s, %s);"
         cursor.execute(insert_query, ( int(user_id), str(reason),))
@@ -61,7 +71,7 @@ class Database:
         Database.disconnect()
 
     def remove_blacklist(user_id):
-        Database.connect(Database())
+        Database.connect()
 
         remove_query = "DELETE FROM blacklist WHERE user_id = '%s';"
         cursor.execute(remove_query, (int(user_id),))
@@ -70,7 +80,7 @@ class Database:
         Database.disconnect()
 
     def find_prefix(guild_id):
-        Database.connect(Database())
+        Database.connect()
 
         find_query = "SELECT prefix from prefixes where guild_id = %s;"
         cursor.execute(find_query, (int(guild_id),))
@@ -79,9 +89,8 @@ class Database:
 
         return data[0]
 
-
     def check_blacklist(user_id):
-        Database.connect(Database())
+        Database.connect()
 
         check_query = "SELECT reason FROM blacklist WHERE user_id = %s;"
         cursor.execute(check_query, (int(user_id),))
@@ -97,7 +106,7 @@ class Database:
     # LOGGING
 
     def add_log(msg_link):
-        Database.connect(Database())
+        Database.connect()
 
         msg_id = random.randint(10000,99999)
 
@@ -120,7 +129,7 @@ class Database:
 
 
     def remove_log(log_id):
-        Database.connect(Database())
+        Database.connect()
 
         remove_query = "DELETE FROM messages WHERE id = '%s';"
         cursor.execute(remove_query, (int(log_id),))
@@ -130,11 +139,21 @@ class Database:
 
     
     def get_log(log_id):
-        Database.connect(Database())
+        Database.connect()
 
         cursor.execute("SELECT msg_link from messages where id = '%s';", (int(log_id),))
         data = cursor.fetchall()
-        
-        return data[0]
 
         Database.disconnect()
+
+        return data[0]
+
+    def get_total_messages():
+        Database.connect()
+
+        cursor.execute("SELECT * FROM messages")
+        data = cursor.fetchall()
+
+        Database.disconnect()
+
+        return len(data)
