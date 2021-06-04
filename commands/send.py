@@ -50,7 +50,6 @@ class Send(commands.Cog):
             await ctx.send("You can not send an empty message", hidden=True)
                 
         else:
-            user_cache.append(ctx.author.id)
 
             if Database.check_blacklist(ctx.author.id) == False:
                 target_dm = target.dm_channel
@@ -65,7 +64,9 @@ class Send(commands.Cog):
                     new_msg_embed=discord.Embed(title="New Disconym message", description=f"{input_message}\n━━━━━━━━━━━━━━━\nMessage ID - `{msg_id}`", color=0x169cdf)
                     new_msg_embed.set_footer(text=f"©️ {self.client.user.name}")
                     new_msg_embed.timestamp = datetime.datetime.now()
+
                     send_msg = await target_dm.send(embed=new_msg_embed)
+                    await ctx.send(f"Failed to send a message to {target.mention}")
 
                     embed=discord.Embed(color=0x169cdf)
                     embed.add_field(name="Message data", value=f"Author profile - {ctx.author.mention}\nAuthor name - `{ctx.author.name}`\nAuthor ID - `{ctx.author.id}`\n━━━━━━━━━━━━━━━\nRecipient profile - {target.mention}\nRecipient name - `{target.name}`\nRecipient ID - `{target.id}`", inline=False)
@@ -76,11 +77,13 @@ class Send(commands.Cog):
 
                     await ctx.send(f"Message to {target.mention} has been delivered succesfully", hidden=True)
 
+                    user_cache.append(ctx.author.id)
+
                     await asyncio.sleep(60)
                     user_cache.remove(ctx.author.id)
 
             else:
                 await ctx.send("Error, you are blacklisted from sending Disconym messages", hidden=True)
-
+                
 def setup(client):
     client.add_cog(Send(client))
