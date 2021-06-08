@@ -1,8 +1,5 @@
 import discord
-import random
-from discord.utils import get
 from discord.ext import commands
-from discord.ext.tasks import loop
 
 class Start(commands.Cog):
 
