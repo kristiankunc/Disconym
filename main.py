@@ -6,7 +6,7 @@ from discord_slash import SlashCommand
 
 intents = discord.Intents.default()
 intents.members = True
-
+    
 def get_prefix(client, message):
     if message.guild == None:
         return "!"
@@ -18,12 +18,14 @@ slash = SlashCommand(client, sync_commands=True, sync_on_cog_reload=True)
 
 client.remove_command('help')
 
+ignored_cogs = ["__init__.py"]
+
 for filename in os.listdir("./commands"):
-    if filename.endswith(".py"):
+    if filename.endswith(".py") and filename not in ignored_cogs:
         client.load_extension(f"commands.{filename[:-3]}")
 
 for filename in os.listdir("./functions"):
-    if filename.endswith(".py"):
+    if filename.endswith(".py") and filename not in ignored_cogs:
         client.load_extension(f"functions.{filename[:-3]}")
 
 with open("token.txt","r") as f:
