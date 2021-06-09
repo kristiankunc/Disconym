@@ -77,6 +77,10 @@ $ CREATE TABLE blacklist(id BIGINT, msg_link VARCHAR(148));
 ```bash
 $ CREATE TABLE blacklist(guild_id BIGINT, prefix STR);
 ```
+ - 4.5 **optional** - create the api table (you do nto really need this if you just want to run the bot)
+```bash
+$ CREATE TABLE api (msgs INT, guilds INT);
+```
 
 #### 5 Edit logging channels
 Edit line **61** in `send.py`
