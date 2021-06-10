@@ -50,6 +50,7 @@ class Errors(commands.Cog):
             await ctx.send(embed=genEmbed(f"Member **{ctx.message.content.split(' ')[1]}** not found"))
 
         else:
+            print("-------------------")
             print(error)
 
 def setup(client):

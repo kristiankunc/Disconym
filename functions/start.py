@@ -14,6 +14,7 @@ class Start(commands.Cog):
             return self.client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="Your Anonymous messages"))
 
         await setPresence()
+        
         print("-------")
         print('Logged in with following details:')
         print('------')
