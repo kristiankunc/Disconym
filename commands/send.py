@@ -65,8 +65,10 @@ class Send(commands.Cog):
                     new_msg_embed.set_footer(text=f"©️ {self.client.user.name}")
                     new_msg_embed.timestamp = datetime.datetime.now()
 
-                    send_msg = await target_dm.send(embed=new_msg_embed)
-                    await ctx.send(f"Failed to send a message to {target.mention}")
+                    try:
+                        send_msg = await target_dm.send(embed=new_msg_embed)
+                    except:
+                        await ctx.send(f"Failed to send a message to {target.mention}", hidden=True)
 
                     embed=discord.Embed(color=0x169cdf)
                     embed.add_field(name="Message data", value=f"Author profile - {ctx.author.mention}\nAuthor name - `{ctx.author.name}`\nAuthor ID - `{ctx.author.id}`\n━━━━━━━━━━━━━━━\nRecipient profile - {target.mention}\nRecipient name - `{target.name}`\nRecipient ID - `{target.id}`", inline=False)
