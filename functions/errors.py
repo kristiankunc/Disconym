@@ -1,8 +1,6 @@
 import discord
 import difflib
 import datetime
-
-from discord import embeds
 from discord.ext.commands.errors import MissingPermissions
 from db_actions import Database
 from discord.ext import commands
