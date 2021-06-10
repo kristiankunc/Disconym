@@ -65,7 +65,7 @@ class Database:
         Database.connect()
 
         insert_query = "INSERT INTO blacklist (user_id, reason) VALUES (%s, %s);"
-        cursor.execute(insert_query, ( int(user_id), str(reason),))
+        cursor.execute(insert_query, (int(user_id), str(reason),))
         db_connection.commit()
 
         Database.disconnect()
@@ -148,6 +148,8 @@ class Database:
 
         return data[0]
 
+    # API
+    
     def get_total_messages():
         Database.connect()
 
@@ -157,3 +159,32 @@ class Database:
         Database.disconnect()
 
         return len(data)
+
+    def clear_api_table():
+        Database.connect()
+
+        cursor.execute("DELETE FROM api")
+        db_connection.commit()
+
+        Database.disconnect()
+
+    def update_api_data(guilds):
+        Database.clear_api_table()
+        total_msgs = int(Database.get_total_messages())
+
+        Database.connect()
+
+        insert_query = f"INSERT INTO api (msgs, guilds) VALUES ({total_msgs}, {guilds});"
+        
+        cursor.execute(insert_query)
+        db_connection.commit()
+
+        Database.disconnect()
+
+    def read_api():
+        Database.connect()
+
+        cursor.execute("SELECT * FROM api")
+        data = cursor.fetchone()
+
+        return data
