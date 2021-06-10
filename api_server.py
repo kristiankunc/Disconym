@@ -14,19 +14,19 @@ def home():
 @app.route('/api/all', methods=['GET'])
 def api_all():
     print(Database.read_api())
-    total_stats = {"total messages": Database.read_api()[0], "total servers": Database.read_api()[1]}
+    total_stats = {"total messages": int(Database.read_api()[0]), "total servers": int(Database.read_api()[1])}
 
     return jsonify(total_stats)
 
 @app.route('/api/msgs', methods=['GET'])
 def api_msgs():
-    messages = Database.read_api()[0]
+    messages = int(Database.read_api()[0])
 
     return jsonify(messages)
 
 @app.route('/api/guilds', methods=['GET'])
 def api_guilds():
-    member_count = Database.read_api()[1]
+    member_count = int(Database.read_api()[1])
     
     return jsonify(member_count)
 
