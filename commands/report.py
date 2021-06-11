@@ -91,8 +91,8 @@ class Report(commands.Cog):
 
                 if report_for_user.dm_channel is None:
                     target_dm = await report_for_user.create_dm()
-                else:
-                    target_dm = report_for_user.dm_channel
+
+                target_dm = report_for_user.dm_channel
 
                 await target_dm.send(f"You have been blacklisted from sending Disconym messages by `{payload.member.name}` for `{report_reason.content}`")
                 await report_author.dm_channel.send(f"Your report has been accepted by `{payload.member.name}`")

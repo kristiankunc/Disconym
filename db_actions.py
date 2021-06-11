@@ -101,6 +101,8 @@ class Database:
 
         except:
             return False
+        else:
+            return True
 
 
     # LOGGING
