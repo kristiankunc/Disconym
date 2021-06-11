@@ -11,7 +11,11 @@ def get_prefix(client, message):
     if message.guild == None:
         return "!"
     else:
-        return Database.find_prefix(message.guild.id)
+        try:
+            return Database.find_prefix(message.guild.id)
+        except:
+            Database.add_prefix(message.guild.id, ".")
+            return "."
 
 client = commands.Bot(command_prefix= (get_prefix), intents=intents, case_insensitive=True)
 slash = SlashCommand(client, sync_commands=True, sync_on_cog_reload=True)
