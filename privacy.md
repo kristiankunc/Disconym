@@ -9,4 +9,4 @@ Disconym stores the following data about you, these data are needed for the Disc
 
 **Data Removal**
 
-If you would like all your personal data to be removed, contact me on GitHub (https://github.com/KristN1)
+If you would like all your personal data to be removed, contact me on GitHub (https://github.com/KristN1/Disconym)
