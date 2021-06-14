@@ -47,9 +47,13 @@ class Help(commands.Cog):
             values_list = field_vaulues.split("__")
             values_loop = 0
 
+            bot_name = self.client.user.name
+            bot_pfp = self.client.user.avatar_url
+
             embed=discord.Embed(title=title, description=descriptionn, color=0x169cdf)
-            embed.set_footer(text=f"©️ {self.client.user.name}")
             embed.timestamp = datetime.datetime.now()
+            embed.set_footer(text=bot_name, icon_url=bot_pfp)
+
 
             while fields > 0:
                 embed.add_field(name=values_list[values_loop], value=values_list[values_loop+1], inline=False)

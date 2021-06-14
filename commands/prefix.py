@@ -1,4 +1,5 @@
 import discord
+import datetime
 from discord.ext import commands
 from db_actions import Database
 from discord_slash import cog_ext, SlashContext
@@ -25,10 +26,14 @@ class Prefix(commands.Cog):
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True) 
     async def prefix(self, ctx, prefix):
+        bot_name = self.client.user.name
+        bot_pfp = self.client.user.avatar_url
+
         Database.replace_prefix(ctx.guild.id, prefix)
 
         embed=discord.Embed(title = "Prefix changed", description = f"Prefix for **{ctx.guild.name}** has been changed to `{prefix}`", color=0x08ccfd)
-        embed.set_footer(text="© Disconym")
+        embed.timestamp = datetime.datetime.now()
+        embed.set_footer(text=bot_name, icon_url=bot_pfp)
         await ctx.send(embed=embed)
 
     @commands.Cog.listener()

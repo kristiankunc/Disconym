@@ -46,6 +46,9 @@ class Report(commands.Cog):
             author = ctx.author
             pfp = author.avatar_url
 
+            bot_name = self.client.user.name
+            bot_pfp = self.client.user.avatar_url
+
             reports_channel = self.client.get_channel(840568536542871572)
 
             report_embed=discord.Embed(color=0x341aff)
@@ -56,8 +59,8 @@ class Report(commands.Cog):
             await report_msg.add_reaction("✅")
 
             report_embed=discord.Embed(title ="Report Submitted", description ="Your report has been submitted and will be reviewed by the moderation team", color=0x341aff)
-            report_embed.set_footer(text=f"©️ {self.client.user.name}")
-            report_embed.timestamp = datetime.datetime.now()
+            report_embed.set_footer(text=bot_name, icon_url=bot_pfp)
+            report_embed.timestamp = datetime.now()
             await ctx.send(embed=report_embed)
 
             await asyncio.sleep(300)

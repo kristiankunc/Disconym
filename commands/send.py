@@ -65,10 +65,13 @@ class Send(commands.Cog):
                     log_channel = self.client.get_channel(840519497747398696)
                     log_msg = await log_channel.send("⠀")
 
+                    bot_name = self.client.user.name
+                    bot_pfp = self.client.user.avatar_url
+
                     msg_id = Database.add_log(log_msg.jump_url)
                     new_msg_embed=discord.Embed(title="New Disconym message", description=f"{input_message}\n━━━━━━━━━━━━━━━\nMessage ID - `{msg_id}`", color=0x169cdf)
-                    new_msg_embed.set_footer(text=f"©️ {self.client.user.name}")
-                    new_msg_embed.timestamp = datetime.datetime.now()
+                    new_msg_embed.set_footer(text=bot_name, icon_url=bot_pfp)
+                    new_msg_embed.timestamp = datetime.now()
 
                     try:
                         send_msg = await target_dm.send(embed=new_msg_embed)
