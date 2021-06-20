@@ -26,7 +26,7 @@ class Privacy(commands.Cog):
         with open ("privacy.md", "r") as f:
             privacy_text = f.read()
 
-        privacy_embed=discord.Embed(title="Disconym's Privacy Polify", description=privacy_text, color=0x169cdf)
+        privacy_embed=discord.Embed(title="Disconym's Privacy Policy", description=privacy_text, color=0x169cdf)
         privacy_embed.set_footer(text=bot_name, icon_url=bot_pfp)
         privacy_embed.timestamp = datetime.now()
         await ctx.send(embed=privacy_embed)
