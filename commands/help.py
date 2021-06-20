@@ -34,7 +34,7 @@ class Help(commands.Cog):
             elif category == 1:
                 title = "🤖 General Commands"
                 descriptionn = "General commands desc\narguments in () are required, and <> are optional"
-                field_vaulues = f"Latency__`{prefix}ping`__Prefix__`{prefix}prefix (new_prefix)`"
+                field_vaulues = f"Latency__`{prefix}ping`__Prefix__`{prefix}prefix (new_prefix)`__Privacy Policy__`{prefix}privacy`__Contributing__`{prefix}contribute`"
             elif category == 2:
                 title = "✍️ Sending messages"
                 descriptionn = "How to send a new message to user\narguments in () are required, and <> are optional"
@@ -84,7 +84,7 @@ class Help(commands.Cog):
                 await help_msg.remove_reaction(reaction.emoji, author)
 
                 if str(reaction.emoji) == robot_emoji:
-                    await gen_embed(1, 2)
+                    await gen_embed(1, 4)
                 elif str(reaction.emoji) == hand_emoji:
                     await gen_embed(2, 1)
                 elif str(reaction.emoji) == book_emoji:
