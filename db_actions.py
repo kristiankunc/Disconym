@@ -30,6 +30,33 @@ class Database:
         db_connection.close()
         cursor.close()
 
+    # INITIALIZE 
+
+    def db_init():
+        Database.connect()
+        
+        create_db = "CREATE DATABASE disconym;"
+        cursor.execute(create_db)
+
+        use_db = "USE disconym;"
+        cursor.execute(use_db)
+
+        create_bl = "CREATE TABLE blacklist(userid BIGINT, reason VARCHAR(256));"
+        cursor.execute(create_bl)
+
+        create_msgs = "CREATE TABLE blacklist(id BIGINT, msg_link VARCHAR(148));"
+        cursor.execute(create_msgs)
+
+        create_prefixes = "CREATE TABLE blacklist(guild_id BIGINT, prefix STR);"
+        cursor.execute(create_prefixes)
+
+        create_api = "CREATE TABLE api (msgs INT, guilds INT);"
+        cursor.execute(create_api)
+
+        db_connection.commit()
+
+        Database.disconnect()
+
     # PREFIX
 
     def add_prefix(guild_id, prefix):
@@ -188,5 +215,38 @@ class Database:
 
         cursor.execute("SELECT * FROM api")
         data = cursor.fetchone()
+
+        return data
+
+    # Ignore
+
+    def add_ignore(author_id, target_id):
+        Database.connect()
+
+        print(author_id)
+        print(target_id)
+
+        insert_query = "INSERT INTO ignored (author_id, ignored_id) VALUES (%s, %s);"
+        cursor.execute(insert_query, (int(author_id), int(target_id),))
+        db_connection.commit()
+
+        Database.disconnect()
+
+    def remove_ignored(author_id, target_id):
+        Database.connect()
+
+        remove_query  = "DELETE FROM ignored WHERE (author_id, ignored_id) = (%s, %s);"
+        cursor.execute(remove_query, (int(author_id), int(target_id),))
+        db_connection.commit()
+
+        Database.disconnect
+
+    def get_ignored(author_id):
+        Database.connect()
+
+        cursor.execute("SELECT ignored_id FROM ignored WHERE author_id = '%s';", (int(author_id),))
+        data = cursor.fetchall()
+
+        Database.disconnect()
 
         return data
