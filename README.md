@@ -58,30 +58,9 @@ mysql_password
 ```
 
 #### 4. Create all needed MySQL databse and tables
-
- - 4.1 create disconym database and switch to it
 ```bash
-$ CREATE DATABASE disconym;
-$ USE disconym;
+$ python init_database.py
 ```
-
- - 4.2 Create the blacklist table
-```bash
-$ CREATE TABLE blacklist(user_id BIGINT, reason VARCHAR(256));
-```
- - 4.3 Create the messages table
-```bash
-$ CREATE TABLE messages(id BIGINT, msg_link VARCHAR(148));
-```
- - 4.4 create the prefixes table
-```bash
-$ CREATE TABLE prefixes(guild_id BIGINT, prefix VARCHAR(10));
-```
- - 4.5 **optional** - create the api table (you do nto really need this if you just want to run the bot)
-```bash
-$ CREATE TABLE api(msgs INT, guilds INT);
-```
-
 #### 5 Edit logging channels
 Edit line **61** in `send.py`
 ```py
