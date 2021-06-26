@@ -67,19 +67,19 @@ $ USE disconym;
 
  - 4.2 Create the blacklist table
 ```bash
-$ CREATE TABLE blacklist(userid BIGINT, reason VARCHAR(256));
+$ CREATE TABLE blacklist(user_id BIGINT, reason VARCHAR(256));
 ```
  - 4.3 Create the messages table
 ```bash
-$ CREATE TABLE blacklist(id BIGINT, msg_link VARCHAR(148));
+$ CREATE TABLE messages(id BIGINT, msg_link VARCHAR(148));
 ```
  - 4.4 create the prefixes table
 ```bash
-$ CREATE TABLE blacklist(guild_id BIGINT, prefix STR);
+$ CREATE TABLE prefixes(guild_id BIGINT, prefix VARCHAR(10));
 ```
  - 4.5 **optional** - create the api table (you do nto really need this if you just want to run the bot)
 ```bash
-$ CREATE TABLE api (msgs INT, guilds INT);
+$ CREATE TABLE api(msgs INT, guilds INT);
 ```
 
 #### 5 Edit logging channels
