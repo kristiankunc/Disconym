@@ -14,15 +14,7 @@ class Help(commands.Cog):
         await self.help(ctx)
 
     @commands.command()
-    async def help(self, ctx):
-        prefix = Database.find_prefix(ctx.guild.id)[0]
-        embed = None
-        help_msg = None
-        author = ctx.author
-        robot_emoji = "🤖"
-        hand_emoji = "✍️"
-        book_emoji = "📕"
-        home_emoji = "🏠"
+    async def help(self, ctx, command_name = None):
 
         def gen_embed(category, fields):
             global embed
@@ -34,7 +26,7 @@ class Help(commands.Cog):
             elif category == 1:
                 title = "🤖 General Commands"
                 descriptionn = "General commands desc\narguments in () are required, and <> are optional"
-                field_vaulues = f"Latency__`{prefix}ping`__Prefix__`{prefix}prefix (new_prefix)`__Privacy Policy__`{prefix}privacy`__Contributing__`{prefix}contribute`"
+                field_vaulues = f"Latency__`{prefix}ping`__Prefix__`{prefix}prefix (new_prefix)`__Ignore__`{prefix}ignore (action) <user>`__Privacy Policy__`{prefix}privacy`__Contributing__`{prefix}contribute`"
             elif category == 2:
                 title = "✍️ Sending messages"
                 descriptionn = "How to send a new message to user\narguments in () are required, and <> are optional"
@@ -65,32 +57,49 @@ class Help(commands.Cog):
             else:
                 return help_msg.edit(embed=embed)
 
-        help_msg = await gen_embed(0, 3)
 
-        await help_msg.add_reaction(robot_emoji)
-        await help_msg.add_reaction(hand_emoji)
-        await help_msg.add_reaction(book_emoji)
-        await help_msg.add_reaction(home_emoji)
 
-        def check(reaction, user):
-            return user == ctx.author
+        if command_name == None:
 
-        while True:
-            try:
-                reaction, user = await self.client.wait_for('reaction_add', timeout=25.0, check=check)
-            except asyncio.TimeoutError:
-                break
-            else:
-                await help_msg.remove_reaction(reaction.emoji, author)
+            prefix = Database.find_prefix(ctx.guild.id)[0]
+            help_msg = None
+            author = ctx.author
+            robot_emoji = "🤖"
+            hand_emoji = "✍️"
+            book_emoji = "📕"
+            home_emoji = "🏠"
 
-                if str(reaction.emoji) == robot_emoji:
-                    await gen_embed(1, 4)
-                elif str(reaction.emoji) == hand_emoji:
-                    await gen_embed(2, 1)
-                elif str(reaction.emoji) == book_emoji:
-                    await gen_embed(3, 1)
-                elif str(reaction.emoji) == home_emoji:
-                    await gen_embed(0, 3)
+            help_msg = await gen_embed(0, 3)
+
+            await help_msg.add_reaction(robot_emoji)
+            await help_msg.add_reaction(hand_emoji)
+            await help_msg.add_reaction(book_emoji)
+            await help_msg.add_reaction(home_emoji)
+
+            def check(reaction, user):
+                return user == ctx.author
+
+            while True:
+                try:
+                    reaction, user = await self.client.wait_for('reaction_add', timeout=25.0, check=check)
+                except asyncio.TimeoutError:
+                    break
+                else:
+                    await help_msg.remove_reaction(reaction.emoji, author)
+
+                    if str(reaction.emoji) == robot_emoji:
+                        await gen_embed(1, 5)
+                    elif str(reaction.emoji) == hand_emoji:
+                        await gen_embed(2, 1)
+                    elif str(reaction.emoji) == book_emoji:
+                        await gen_embed(3, 1)
+                    elif str(reaction.emoji) == home_emoji:
+                        await gen_embed(0, 3)
+
+        else:
+            print(self.client.commands)
+            if command_name in self.client.commands:
+                print("command found")
                 
                 
 
