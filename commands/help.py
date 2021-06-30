@@ -21,19 +21,19 @@ class Help(commands.Cog):
 
             if category == 0:
                 title = "Help Menu"
-                descriptionn = "Use reactions to get more info about a category"
+                description = "Use reactions to get more info about a category"
                 field_vaulues = "🤖 General Commands__Other - not so useful commands__✍️ Sending Messages__Main feature of the bot__📕 Reporting Users__How to report and block user"
             elif category == 1:
                 title = "🤖 General Commands"
-                descriptionn = "General commands desc\narguments in () are required, and <> are optional"
+                description = "General commands desc\narguments in () are required, and <> are optional"
                 field_vaulues = f"Latency__`{prefix}ping`__Prefix__`{prefix}prefix (new_prefix)`__Ignore__`{prefix}ignore (action) <user>`__Privacy Policy__`{prefix}privacy`__Contributing__`{prefix}contribute`"
             elif category == 2:
                 title = "✍️ Sending messages"
-                descriptionn = "How to send a new message to user\narguments in () are required, and <> are optional"
+                description = "How to send a new message to user\narguments in () are required, and <> are optional"
                 field_vaulues = f"Send__`{prefix}send (Usernam#tag) (message)`\n*must be executed in bot's private messages*"
             elif category == 3:
                 title = "📕 Reporting Users"
-                descriptionn = "How to report a user\narguments in () are required, and <> are optional"
+                description = "How to report a user\narguments in () are required, and <> are optional"
                 field_vaulues = f"Submit a report__`{prefix}report (message_id) <reason>`"
 
             values_list = field_vaulues.split("__")
@@ -42,7 +42,7 @@ class Help(commands.Cog):
             bot_name = self.client.user.name
             bot_pfp = self.client.user.avatar_url
 
-            embed=discord.Embed(title=title, description=descriptionn, color=0x169cdf)
+            embed=discord.Embed(title=title, description=description, color=0x169cdf)
             embed.timestamp = datetime.datetime.now()
             embed.set_footer(text=bot_name, icon_url=bot_pfp)
 

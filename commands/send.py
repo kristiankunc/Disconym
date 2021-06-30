@@ -18,14 +18,14 @@ class Send(commands.Cog):
                         options=[
                             create_option(
                             name="recipient",
-                            description="The user who is going to receive the message (Username#tag)",
+                            description="The user who is going to receive the message",
                             option_type=6,
                             required=True
                             ),
 
                             create_option(
                             name="message",
-                            description="The actuall message",
+                            description="The actual message",
                             option_type=3,
                             required=True
                             )
@@ -40,57 +40,82 @@ class Send(commands.Cog):
         await self.send_command(ctx, target, input_message)
 
     async def send_command(self, ctx, target: discord.Member, *, input_message):
-        if ctx.author.id in user_cache:
-            await ctx.send("Please wait before sending another message.", hidden=True)
 
-        elif ctx.author == target:
-            await ctx.send("You can't send messages to yourself", hidden=True)
+        async def checks():
+            if ctx.author.id in user_cache:
+                await ctx.send("Please wait before sending another message.", hidden=True)
+                return False
 
-        elif input_message == None:
-            await ctx.send("You can not send an empty message", hidden=True)
+            elif ctx.author == target:
+                await ctx.send("You can't send messages to yourself", hidden=True)
+                return False
 
-        elif Database.check_blacklist(ctx.author.id) == True:
-            await ctx.send("Error, you are blacklisted from sending Disconym messages", hidden=True)
+            elif input_message == None:
+                await ctx.send("You can not send an empty message", hidden=True)
+                return False
 
-        else:
-            try:
-                target_dm = target.dm_channel
-            except:
-                await ctx.send("Failed to send message to that user\nMake sure their DMs are opened and that it is not a bot", hidden=True)
+            elif Database.check_blacklist(ctx.author.id) == True:
+                await ctx.send("You are blacklisted from sending Disconym messages", hidden=True)
+                return False
+
+            elif Database.check_ignored(ctx.author.id, target.id) == 1:
+                await ctx.send("You can not send message to user who is in your ignored list", hidden=True)
+                return False
+            
+            elif Database.check_ignored(ctx.author.id, target.id) == 2:
+                await ctx.send("You can not send message to user who is ignoring you", hidden=True)
+                return False
 
             else:
-                if target_dm is None:
-                    target_dm = await target.create_dm()
+                return True
 
-                    log_channel = self.client.get_channel(840519497747398696)
-                    log_msg = await log_channel.send("⠀")
+        async def create_dm():
+            if await checks() == True:
+                try:
+                    target_dm = target.dm_channel
+                    return target_dm
+                except:
+                    await ctx.send("Failed to send message to that user\nMake sure their DMs are opened and that it is not a bot", hidden=True)
+            
+            else:
+                False
 
-                    bot_name = self.client.user.name
-                    bot_pfp = self.client.user.avatar_url
+        target_dm = await create_dm()
 
-                    msg_id = Database.add_log(log_msg.jump_url)
-                    new_msg_embed=discord.Embed(title="New Disconym message", description=f"{input_message}\n━━━━━━━━━━━━━━━\nMessage ID - `{msg_id}`", color=0x169cdf)
-                    new_msg_embed.set_footer(text=bot_name, icon_url=bot_pfp)
-                    new_msg_embed.timestamp = datetime.now()
+        if target_dm != False:
 
-                    try:
-                        send_msg = await target_dm.send(embed=new_msg_embed)
-                    except:
-                        await ctx.send(f"Failed to send a message to {target.mention}", hidden=True)
+            if target_dm is None:
+                target_dm = await target.create_dm()
 
-                    embed=discord.Embed(color=0x169cdf)
-                    embed.add_field(name="Message data", value=f"Author profile - {ctx.author.mention}\nAuthor name - `{ctx.author.name}`\nAuthor ID - `{ctx.author.id}`\n━━━━━━━━━━━━━━━\nRecipient profile - {target.mention}\nRecipient name - `{target.name}`\nRecipient ID - `{target.id}`", inline=False)
-                    embed.add_field(name="Message content", value=f"`{input_message}`")
-                    embed.set_footer(text=f"Message ID - {msg_id}")
+                log_channel = self.client.get_channel(840519497747398696)
+                log_msg = await log_channel.send("⠀")
 
-                    await log_msg.edit(embed=embed)
+                bot_name = self.client.user.name
+                bot_pfp = self.client.user.avatar_url
 
-                    await ctx.send(f"Message to {target.mention} has been delivered succesfully", hidden=True)
+                msg_id = Database.add_log(log_msg.jump_url)
+                new_msg_embed=discord.Embed(title="New Disconym message", description=f"{input_message}\n━━━━━━━━━━━━━━━\nMessage ID - `{msg_id}`", color=0x169cdf)
+                new_msg_embed.set_footer(text=bot_name, icon_url=bot_pfp)
+                new_msg_embed.timestamp = datetime.datetime.now()
 
-                    user_cache.append(ctx.author.id)
+                try:
+                    send_msg = await target_dm.send(embed=new_msg_embed)
+                except:
+                    await ctx.send(f"Failed to send a message to {target.mention}", hidden=True)
 
-                    await asyncio.sleep(60)
-                    user_cache.remove(ctx.author.id)
+                embed=discord.Embed(color=0x169cdf)
+                embed.add_field(name="Message data", value=f"Author profile - {ctx.author.mention}\nAuthor name - `{ctx.author.name}`\nAuthor ID - `{ctx.author.id}`\n━━━━━━━━━━━━━━━\nRecipient profile - {target.mention}\nRecipient name - `{target.name}`\nRecipient ID - `{target.id}`", inline=False)
+                embed.add_field(name="Message content", value=f"`{input_message}`")
+                embed.set_footer(text=f"Message ID - {msg_id}")
+
+                await log_msg.edit(embed=embed)
+
+                await ctx.send(f"Message to {target.mention} has been delivered successfully", hidden=True)
+
+                user_cache.append(ctx.author.id)
+
+                await asyncio.sleep(60)
+                user_cache.remove(ctx.author.id)
 
                 
 def setup(client):
