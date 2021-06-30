@@ -250,3 +250,33 @@ class Database:
         Database.disconnect()
 
         return data
+
+    def check_ignored(author_id, target_id):
+        author_ignored = ""
+        target_ignored = ""
+
+        author_ignored_data = Database.get_ignored(author_id)
+        target_ignored_data = Database.get_ignored(target_id)
+
+        for data in author_ignored_data:
+            for user in data:
+                author_ignored += str(user)
+
+        for data in target_ignored_data:
+            for user in data:
+                target_ignored += str(user)
+
+        print(author_ignored)
+        print(target_ignored)
+
+        if target_ignored in author_ignored:   # Message author is ignoring the target
+            print("1")
+            return 1
+
+        elif author_ignored in target_ignored: # Target is ignoring the author
+            print("2")
+            return 2
+
+        else: # All good
+            print("0")
+            return 0
