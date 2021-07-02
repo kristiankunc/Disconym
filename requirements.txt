@@ -1,4 +1,4 @@
 discord.py
-mysql.connector
+mysql-connector
 discord-py-slash-command
 flask
