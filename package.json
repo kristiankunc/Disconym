@@ -1,0 +1,27 @@
+{
+  "name": "disconym",
+  "version": "1.0.0",
+  "description": "a Discord bot that allows you to send anonymous messages to other users",
+  "main": "api_server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KristN1/Disconym.git"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "KristN",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/KristN1/Disconym/issues"
+  },
+  "homepage": "https://github.com/KristN1/Disconym#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "python-shell": "^3.0.0"
+  }
+}
