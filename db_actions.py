@@ -1,4 +1,5 @@
 import random
+import json
 import mysql.connector as mysql
 
 host = None
@@ -14,12 +15,15 @@ class Database:
         global password
 
         if host == None:
-            with open("db_data.txt","r") as f:
-                lines = f.readlines()
-                host = lines[0]
-                database = lines[1]
-                user = lines[2]
-                password = lines[3]
+            with open('config.json',) as f:
+                config = json.load(f)
+
+                database_creds = config["database"]
+
+                host = database_creds[0]["ip"]
+                database = database_creds[1]["db_name"]
+                user = database_creds[2]["username"]
+                password = database_creds[3]["password"]
 
         global db_connection
         global cursor

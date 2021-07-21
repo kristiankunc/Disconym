@@ -1,12 +1,17 @@
 import discord
 import asyncio
 import datetime
+import json
 from discord.ext import commands
 from db_actions import Database
 from discord_slash import cog_ext, SlashContext
 from discord_slash.utils.manage_commands import create_option
 
 user_cache = []
+
+with open('config.json',) as f:
+    config = json.load(f)
+    logs_channel = config["channels"][0]["logs_channel"]
 
 class Send(commands.Cog):
 
@@ -73,8 +78,7 @@ class Send(commands.Cog):
                 if target_dm is None:
                     target_dm = await target.create_dm()
 
-                log_channel = self.client.get_channel(840519497747398696)
-                log_msg = await log_channel.send("⠀")
+                log_msg = await logs_channel.send("⠀")
 
                 bot_name = self.client.user.name
                 bot_pfp = self.client.user.avatar_url
