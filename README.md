@@ -48,32 +48,15 @@ or download the code directly by clicking the green "Code" button and then "Down
 
 
 #### 2. Change to the directory
-#### 3. create file called `token.txt` and paste there your [Discord Bot token](http://discord.com/developers)
-#### 4. Create file called `db_data.txt` and paste data in the following format
-```bash
-mysql_server_ip
-database_name
-mysql_username
-mysql_password
-```
+#### 3. Rename `congif.json.example` to `config.json` and edit it with your credentials 
+![Config example](https://raw.githubusercontent.com/KristN1/Disconym/main/imgs/config.json-example.png)
 
 #### 4. Create all needed MySQL databse and tables
 ```bash
 $ python init_database.py
 ```
-#### 5 Edit logging channels
-Edit line **61** in `send.py`
-```py
-log_channel = self.client.get_channel(your_channel_id)
-```
 
-And line **49** in `report.py`
-
-```py
-reports_channel = self.client.get_channel(your_channel_id)
-```
-
-#### 6. Run main.py
+#### 5. Run main.py
 ```bash
 $ python main.py
 ```
