@@ -2,18 +2,60 @@ import discord
 import datetime
 from discord.ext import commands
 from db_actions import Database
+from discord_slash import cog_ext, SlashContext
+from discord_slash.utils.manage_commands import create_option, create_choice
 
 class Ignore(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @cog_ext.cog_slash  (name="ignore",
+                        guild_ids=[828921165622935582],
+                        description="List & Manage users in your ignored list",
+                        options=[
+                        create_option(
+                            name="action",
+                            description="Select action which you want to use for this command",
+                            option_type=3,
+                            required=True,
+                            choices=[
+                            create_choice(
+                                name="Add",
+                                value="add"
+                            ),
+                            create_choice(
+                                name="Remove",
+                                value="remove"
+                            ),
+                            create_choice(
+                                name="list",
+                                value="list"
+                            )
+                            ]
+                        ),
+                        create_option(
+                            name="user",
+                            description="Enter a user that you want to use for this command (only for add/remove)",
+                            option_type=6,
+                            required=False,
+                        )
+                        ])
+
+
+    async def _ignore(self, ctx: SlashContext, action, user : discord.User = None):
+        await self.ignore_command(ctx=ctx, action=action, user=user)
+
 
     @commands.command()
     async def ignore(self, ctx, action, user : discord.User = None):
+        await self.ignore_command(self, ctx, action, user)
+
+
+    async def ignore_command(self, ctx, action, user : discord.User = None):
         if action == "add":
             if user != None:
                 Database.add_ignore(ctx.author.id, user.id)
-                await ctx.send(f"Successfully added {user.mention} to your ignored list")
+                await ctx.send(f"Successfully added **{user.name}** to your ignored list")
 
         elif action == "list":
             ignored_users = ""
@@ -35,7 +77,10 @@ class Ignore(commands.Cog):
         elif action == "remove":
             if user != None:
                 Database.remove_ignored(ctx.author.id, user.id)
-                await ctx.send(f"Successfully removed {user.mention} from your ignored list")
+                await ctx.send(f"Successfully removed **{user.name}** from your ignored list")
+
+        else:
+            await ctx.send(f"Invalid action - {action}")
 
 def setup(client):
     client.add_cog(Ignore(client))

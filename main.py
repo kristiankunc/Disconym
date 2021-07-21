@@ -23,7 +23,7 @@ slash = SlashCommand(client, sync_commands=True, sync_on_cog_reload=True)
 
 client.remove_command('help')
 
-ignored_cogs = ["__init__.py", "ignore.py"]
+ignored_cogs = ["__init__.py"]
 
 for filename in os.listdir("./commands"):
     if filename.endswith(".py") and filename not in ignored_cogs:
