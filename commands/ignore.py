@@ -10,7 +10,6 @@ class Ignore(commands.Cog):
         self.client = client
 
     @cog_ext.cog_slash  (name="ignore",
-                        guild_ids=[828921165622935582],
                         description="List & Manage users in your ignored list",
                         options=[
                         create_option(
