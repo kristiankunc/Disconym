@@ -1,12 +1,16 @@
 import discord
 import asyncio
 import datetime
+import json
 from discord.ext import commands
 from db_actions import Database
 from discord_slash import cog_ext, SlashContext
 from discord_slash.utils.manage_commands import create_option
 
 user_cache = []
+with open('config.json',) as f:
+    config = json.load(f)
+    reports_channel = config["channels"][1]["reports_channel"]
 
 class Report(commands.Cog):
 
@@ -48,8 +52,6 @@ class Report(commands.Cog):
 
             bot_name = self.client.user.name
             bot_pfp = self.client.user.avatar_url
-
-            reports_channel = self.client.get_channel(840568536542871572)
 
             report_embed=discord.Embed(color=0x341aff)
             report_embed.add_field(name="New report submitted", value=f"Report author profile - {ctx.author.mention}\nReport author name - `{ctx.author.name}`\nReport author ID - `{ctx.author.id}`\nReport reason - `{reason}`", inline=False)

@@ -2,3 +2,5 @@ __pycache__/
 **/__pycache__
 token.txt
 db_data.txt
+node_modules
+config.json

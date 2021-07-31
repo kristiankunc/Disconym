@@ -1,4 +1,5 @@
 import random
+import json
 import mysql.connector as mysql
 
 host = None
@@ -14,12 +15,15 @@ class Database:
         global password
 
         if host == None:
-            with open("db_data.txt","r") as f:
-                lines = f.readlines()
-                host = lines[0]
-                database = lines[1]
-                user = lines[2]
-                password = lines[3]
+            with open('config.json',) as f:
+                config = json.load(f)
+
+                database_creds = config["database"]
+
+                host = database_creds[0]["ip"]
+                database = database_creds[1]["db_name"]
+                user = database_creds[2]["username"]
+                password = database_creds[3]["password"]
 
         global db_connection
         global cursor
@@ -252,31 +256,29 @@ class Database:
         return data
 
     def check_ignored(author_id, target_id):
-        author_ignored = ""
-        target_ignored = ""
+        author_ignored = []
+        target_ignored = []
 
         author_ignored_data = Database.get_ignored(author_id)
         target_ignored_data = Database.get_ignored(target_id)
 
         for data in author_ignored_data:
             for user in data:
-                author_ignored += str(user)
+                author_ignored.append(int(user))
 
         for data in target_ignored_data:
             for user in data:
-                target_ignored += str(user)
+                target_ignored.append(int(user))
 
-        print(author_ignored)
-        print(target_ignored)
+        for user in author_ignored:
+            if user == target_id:   # Message author is ignoring the target
+                print("1")
+                return 1
 
-        if target_ignored in author_ignored:   # Message author is ignoring the target
-            print("1")
-            return 1
+        for user in target_ignored:
+            if user == author_id:   # Target is ignoring the author
+                print("2")
+                return 2
 
-        elif author_ignored in target_ignored: # Target is ignoring the author
-            print("2")
-            return 2
-
-        else: # All good
-            print("0")
-            return 0
+        print("0")
+        return 0

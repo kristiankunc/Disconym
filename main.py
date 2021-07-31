@@ -1,5 +1,6 @@
 import discord
 import os
+import json
 from discord.ext import commands
 from db_actions import Database
 from discord_slash import SlashCommand
@@ -32,7 +33,8 @@ for filename in os.listdir("./functions"):
     if filename.endswith(".py") and filename not in ignored_cogs:
         client.load_extension(f"functions.{filename[:-3]}")
 
-with open("token.txt","r") as f:
-    token = f.read()
+with open('config.json',) as f:
+    config = json.load(f)
+    token = config["token"]
 
 client.run(token)

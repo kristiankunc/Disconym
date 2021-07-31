@@ -1,8 +1,12 @@
 import discord
 import asyncio
+import json
 from discord.ext import commands
 from db_actions import Database
-from discord.utils import get
+
+with open('config.json',) as f:
+    config = json.load(f)
+    admins = config["admins"]
 
 class Database_ctr(commands.Cog):
 
@@ -20,7 +24,7 @@ class Database_ctr(commands.Cog):
         emoji_four = "4️⃣"
         emoji_five = "5️⃣"
 
-        if ctx.author.id == 289411795423199232:
+        if ctx.author.id in admins:
                 
             channel = ctx.channel
 
@@ -183,10 +187,17 @@ class Database_ctr(commands.Cog):
                             await log_id_msg.delete()
 
                             await embed.edit(embed = define_embed("Message link", f"{Database.get_log(log_id_msg.content)}"))
+        else:
+            await ctx.send("You don't have permission to use this command")
 
 
-
-
-
+    @commands.command()
+    async def db_init(self, ctx):
+        if ctx.author.id in admins:
+            Database.db_init()
+            await ctx.send("Database has been initialized")
+        else:
+            await ctx.send("You don't have permission to use this command")
+        
 def setup(client):
     client.add_cog(Database_ctr(client))

@@ -15,6 +15,7 @@ class Help(commands.Cog):
 
     @commands.command()
     async def help(self, ctx, command_name = None):
+        prefix = Database.find_prefix(ctx.guild.id)[0]
 
         def gen_embed(category, fields):
             global embed
@@ -57,11 +58,8 @@ class Help(commands.Cog):
             else:
                 return help_msg.edit(embed=embed)
 
-
-
         if command_name == None:
 
-            prefix = Database.find_prefix(ctx.guild.id)[0]
             help_msg = None
             author = ctx.author
             robot_emoji = "🤖"
@@ -97,10 +95,20 @@ class Help(commands.Cog):
                         await gen_embed(0, 3)
 
         else:
-            print(self.client.commands)
-            if command_name in self.client.commands:
-                print("command found")
-                
+            def find_command():
+                command = discord.utils.find(lambda c: c.name == command_name, self.client.commands)
+                if command == None:
+                    return None
+                else:
+                    return command
+            
+            command = find_command()
+
+            if command == None:
+                await ctx.send(f"Command `{command_name}` does not exist")
+            else:
+                await ctx.send(f"Syntax for `{command_name}` is\n`{prefix}{command_name} {command.signature}`")
+        
                 
 
 def setup(client):

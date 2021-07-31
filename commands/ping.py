@@ -21,7 +21,7 @@ class Ping(commands.Cog):
         bot_pfp = self.client.user.avatar_url
 
         embed=discord.Embed(color=0x08ccfd)
-        embed.add_field(name="Pong", value=f"Latency is `{round(self.client.latency * 1000)}`ms", inline=False)
+        embed.add_field(name="Pong", value=f"Latency is `{round(self.client.latency * 1000)}` ms", inline=False)
         embed.timestamp = datetime.datetime.now()
         embed.set_footer(text=bot_name, icon_url=bot_pfp)
         
