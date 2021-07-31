@@ -3,7 +3,7 @@ const {exec} = require("child_process");
 
 const app = express();
 
-const port = 80;
+const port = 8080;
 app.listen(port, () => console.log(`Server running on port ${port}`));
 
 async function get_api(){
