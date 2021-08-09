@@ -27,7 +27,7 @@ class Ignore(commands.Cog):
                                 value="remove"
                             ),
                             create_choice(
-                                name="list",
+                                name="List",
                                 value="list"
                             )
                             ]
@@ -64,6 +64,9 @@ class Ignore(commands.Cog):
                 for user in data:
                     ignored_users += f"<@{user}> - `{user}`\n"
 
+            if ignored_users == "":
+                ignored_users = "*There are no ignored users*"
+                
             bot_name = self.client.user.name
             bot_pfp = self.client.user.avatar_url
 
