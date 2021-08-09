@@ -222,7 +222,7 @@ class Database:
 
         return data
 
-    # Ignore
+    # IGNORE
 
     def add_ignore(author_id, target_id):
         Database.connect()
@@ -281,4 +281,4 @@ class Database:
                 return 2
 
         print("0")
-        return 0
+        return 0 # Users are not ignoring eachother
