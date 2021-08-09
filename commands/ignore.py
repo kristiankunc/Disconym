@@ -47,7 +47,7 @@ class Ignore(commands.Cog):
 
     @commands.command()
     async def ignore(self, ctx, action, user : discord.User = None):
-        await self.ignore_command(self, ctx, action, user)
+        await self.ignore_command(ctx, action, user)
 
 
     async def ignore_command(self, ctx, action, user : discord.User = None):
