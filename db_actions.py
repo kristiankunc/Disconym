@@ -1,5 +1,6 @@
 import random
 import json
+import re
 import mysql.connector as mysql
 
 host = None
@@ -56,6 +57,9 @@ class Database:
 
         create_api = "CREATE TABLE api (msgs INT, guilds INT);"
         cursor.execute(create_api)
+
+        create_dms_option = ("CREATE TABLE dms_option (user_id BIGINT);")
+        cursor.execute(create_dms_option)
 
         db_connection.commit()
 
@@ -282,3 +286,35 @@ class Database:
                 return 2
 
         return 0 # Users are not ignoring eachother
+
+
+    # DMS OPTION
+
+    def dms_open(user_id):
+        Database.connect()
+
+        cursor.execute("DELETE FROM dms_option WHERE (user_id) = (%s);", (int(user_id),))
+        db_connection.commit()
+
+        Database.disconnect()
+
+    def dms_close(user_id):
+        Database.connect()
+
+        cursor.execute("INSERT INTO dms_option (user_id) VALUES (%s);", (int(user_id),))
+        db_connection.commit()
+
+        Database.disconnect()
+
+    def dms_check(user_id):
+        Database.connect()
+
+        cursor.execute("SELECT * FROM dms_option WHERE (user_id) = (%s);", (int(user_id),))
+        data = cursor.fetchone()
+
+        Database.disconnect()
+
+        if data == None: # User has opened DMs
+            return True
+        else:            # User has closed DMs
+            return False
