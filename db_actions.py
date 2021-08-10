@@ -127,6 +127,8 @@ class Database:
         cursor.execute(check_query, (int(user_id),))
         data = cursor.fetchall()
 
+        Database.disconnect()
+
         try:
             d = data[0]
 
@@ -220,15 +222,14 @@ class Database:
         cursor.execute("SELECT * FROM api")
         data = cursor.fetchone()
 
+        Database.disconnect()
+
         return data
 
     # IGNORE
 
     def add_ignore(author_id, target_id):
         Database.connect()
-
-        print(author_id)
-        print(target_id)
 
         insert_query = "INSERT INTO ignored (author_id, ignored_id) VALUES (%s, %s);"
         cursor.execute(insert_query, (int(author_id), int(target_id),))
@@ -262,6 +263,8 @@ class Database:
         author_ignored_data = Database.get_ignored(author_id)
         target_ignored_data = Database.get_ignored(target_id)
 
+        Database.disconnect()
+        
         for data in author_ignored_data:
             for user in data:
                 author_ignored.append(int(user))
@@ -272,13 +275,10 @@ class Database:
 
         for user in author_ignored:
             if user == target_id:   # Message author is ignoring the target
-                print("1")
                 return 1
 
         for user in target_ignored:
             if user == author_id:   # Target is ignoring the author
-                print("2")
                 return 2
 
-        print("0")
         return 0 # Users are not ignoring eachother
