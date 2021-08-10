@@ -71,6 +71,10 @@ class Send(commands.Cog):
             status = True
             await ctx.send("You can not send message to user who is ignoring you", hidden=True)
 
+        elif Database.dms_check(target.id) == False:
+            status = True
+            await ctx.send("You can not send a message to a user who has their Disconym DMs closed", hidden=True)
+
         if status == False:
             try:
                 target_dm = target.dm_channel

@@ -33,7 +33,7 @@ class Ignore(commands.Cog):
                             ]
                         ),
                         create_option(
-                            name="User",
+                            name="user",
                             description="Enter a user that you want to use for this command (only for add/remove)",
                             option_type=6,
                             required=False,
