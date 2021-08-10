@@ -54,7 +54,6 @@ class Ignore(commands.Cog):
         if action == "add":
             if user != None:
                 ignored_code = Database.check_ignored(ctx.author.id, user.id)
-                print(ignored_code)
                 if ignored_code !=1:
                     Database.add_ignore(ctx.author.id, user.id)
                     await ctx.send(f"Successfully added **{user.name}** to your ignored list")
