@@ -59,9 +59,9 @@ class Errors(commands.Cog):
         elif isinstance(error, MissingPermissions):
             await ctx.send(embed=genEmbed(f"You are missing permissions to run **{command_name}**"))
         elif isinstance(error, commands.MemberNotFound):
-            await ctx.send(embed=genEmbed(f"Member not found"))
+            await ctx.send(embed=genEmbed(f"Member **{error.argument}** not found"))
         elif isinstance(error, commands.UserNotFound):
-            await ctx.send(embed=genEmbed(f"User not found"))
+            await ctx.send(embed=genEmbed(f"User **{error.argument}** not found"))
 
         else:
             print("-------------------")
