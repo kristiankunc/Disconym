@@ -27,13 +27,13 @@ class Ignore(commands.Cog):
                                 value="remove"
                             ),
                             create_choice(
-                                name="List",
+                                name="list",
                                 value="list"
                             )
                             ]
                         ),
                         create_option(
-                            name="user",
+                            name="User",
                             description="Enter a user that you want to use for this command (only for add/remove)",
                             option_type=6,
                             required=False,
@@ -53,8 +53,14 @@ class Ignore(commands.Cog):
     async def ignore_command(self, ctx, action, user : discord.User = None):
         if action == "add":
             if user != None:
-                Database.add_ignore(ctx.author.id, user.id)
-                await ctx.send(f"Successfully added **{user.name}** to your ignored list")
+                ignored_code = Database.check_ignored(ctx.author.id, user.id)
+                print(ignored_code)
+                if ignored_code !=1:
+                    Database.add_ignore(ctx.author.id, user.id)
+                    await ctx.send(f"Successfully added **{user.name}** to your ignored list")
+
+                else:
+                    await ctx.send(f"You are already ignoring **{user.name}**")
 
         elif action == "list":
             ignored_users = ""
