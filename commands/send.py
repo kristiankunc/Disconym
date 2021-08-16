@@ -39,7 +39,7 @@ class Send(commands.Cog):
     async def _send(self, ctx: SlashContext, recipient: discord.Member, message: str):
         await self.send_command(ctx=ctx, target=recipient, input_message=message)
 
-    @commands.command()
+    @commands.command(aliases=["s", "dm"], description="Send an anonymous message to a user")
     @commands.dm_only()
     async def send(self, ctx, target: discord.Member, *, input_message):
         await self.send_command(ctx, target, input_message)

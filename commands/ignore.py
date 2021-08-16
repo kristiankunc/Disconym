@@ -42,15 +42,11 @@ class Ignore(commands.Cog):
 
 
     async def _ignore(self, ctx: SlashContext, action, user : discord.User = None):
-        await self.ignore_command(ctx=ctx, action=action, user=user)
+        await self.ignore(ctx=ctx, action=action, user=user)
 
 
-    @commands.command()
+    @commands.command(aliases=["i"], description="Manage your ignored list")
     async def ignore(self, ctx, action, user : discord.User = None):
-        await self.ignore_command(ctx, action, user)
-
-
-    async def ignore_command(self, ctx, action, user : discord.User = None):
         if action == "add":
             if user != None:
                 ignored_code = Database.check_ignored(ctx.author.id, user.id)

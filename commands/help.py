@@ -55,7 +55,7 @@ class Help(commands.Cog):
     async def _help(self, ctx: SlashContext):
         await self.help(ctx)
 
-    @commands.command()
+    @commands.command(aliases=["h"], description="Show all the commands and their syntax")
     async def help(self, ctx, command_name = None):
         help_msg = None
         prefix = Database.find_prefix(ctx.guild.id)[0]

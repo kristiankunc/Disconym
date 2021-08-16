@@ -10,13 +10,10 @@ class Ping(commands.Cog):
 
     @cog_ext.cog_slash(name="ping", description="Show the bot's latency")
     async def ping_slash(self, ctx: SlashContext):
-        await self.ping_command(ctx)
+        await self.ping(ctx)
 
-    @commands.command()
+    @commands.command(aliases=["p"], description="Show the bot's latency")
     async def ping(self, ctx):
-        await self.ping_command(ctx)
-
-    async def ping_command(self, ctx):
         bot_name = self.client.user.name
         bot_pfp = self.client.user.avatar_url
 

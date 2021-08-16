@@ -23,7 +23,7 @@ class Prefix(commands.Cog):
     async def _prefix(self, ctx: SlashContext, prefix: str):
         await self.prefix(ctx, prefix)
 
-    @commands.command(pass_context=True)
+    @commands.command(aliases=["p"], description="Change the bot's prefix for this guild", pass_context=True)
     @commands.has_permissions(administrator=True) 
     async def prefix(self, ctx, prefix):
         bot_name = self.client.user.name

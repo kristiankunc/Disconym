@@ -32,7 +32,7 @@ class Ping(commands.Cog):
     async def dms_slash(self, ctx: SlashContext, option):
         await self.dms(ctx, option)
 
-    @commands.command()
+    @commands.command(aliases=["messages"], description="Open/Close your Discord DMs")
     async def dms(self, ctx, option):
         if option.lower() == "open":
             Database.dms_open(ctx.author.id)

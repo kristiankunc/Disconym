@@ -11,7 +11,7 @@ class Contribute(commands.Cog):
     async def _contribute(self, ctx: SlashContext):
         await self.help(ctx)
 
-    @commands.command()
+    @commands.command(aliases=["c"], description="Sends link to the GitHub repo")
     async def contribute(self, ctx):
         await ctx.send("You can contribute here:\n<https://github.com/KristN1/disconym>")
 

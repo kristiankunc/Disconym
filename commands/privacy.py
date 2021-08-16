@@ -13,13 +13,10 @@ class Privacy(commands.Cog):
                         )
 
     async def _privacy(self, ctx: SlashContext):
-        await self.privacy_command(ctx)
+        await self.privacy(ctx)
 
-    @commands.command()
+    @commands.command(aliases=["tos", "terms", "conditions", "policy"], description="See the privacy policy")
     async def privacy(self, ctx):
-        await self.privacy_command(ctx)
-
-    async def privacy_command(self, ctx):
         bot_name = self.client.user.name
         bot_pfp = self.client.user.avatar_url
 

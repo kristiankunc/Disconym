@@ -14,8 +14,8 @@ class Database_ctr(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
-    async def db(self, ctx):
+    @commands.command(aliases=["db"], description="Allows you to control the database and it's data")
+    async def database(self, ctx):
         author = ctx.message.author
         pfp = author.avatar_url
 

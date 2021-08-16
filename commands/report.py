@@ -39,7 +39,7 @@ class Report(commands.Cog):
         print(ctx.author)
         await self.report(ctx, message_id, reason)
 
-    @commands.command()
+    @commands.command(aliases=["r"], description="Report user for inappropriate messages")
     async def report(self, ctx, log_id, reason=None):
         
         if ctx.author.id in user_cache:
