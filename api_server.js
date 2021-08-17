@@ -11,8 +11,8 @@ async function get_api(){
         exec('python -c "import db_actions; print(db_actions.Database.read_api())"', (error, stdout, stderr) => {
             const api_data_raw = stdout.split("'");
 
-            const total_messages = api_data_raw[1];
-            const total_guilds = api_data_raw[3];
+            const total_messages = parseInt(api_data_raw[1]);
+            const total_guilds = parseInt(api_data_raw[3]);
 
             const api_data = {
                 total_messages,
