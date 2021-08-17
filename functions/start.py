@@ -1,4 +1,5 @@
 import discord
+import subprocess
 from discord.ext import commands
 
 class Start(commands.Cog):
@@ -15,6 +16,8 @@ class Start(commands.Cog):
 
         await setPresence()
         
+        ps = subprocess.Popen(['node','api_server.js'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+
         print("-------")
         print('Logged in with following details:')
         print('------')
