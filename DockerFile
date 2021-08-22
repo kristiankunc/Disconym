@@ -1,16 +1,7 @@
-FROM debian10
+FROM python:3
 
-RUN apt-get update -y && \
-    apt-get install -y python-pip python-dev
-
-COPY ./requirements.txt /Disconym/requirements.txt
-
-WORKDIR /Disconym
+ADD main.py /
 
 RUN pip install -r requirements.txt
 
-COPY . /Disconym
-
-ENTRYPOINT [ "python" ]
-
-CMD [ "api_server.py" ]
+CMD [ "python", "./main.py" ]
