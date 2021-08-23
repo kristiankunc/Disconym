@@ -10,7 +10,7 @@ intents.members = True
     
 def get_prefix(client, message):
     if message.guild == None:
-        return "!"
+        return "."
     else:
         try:
             return Database.find_prefix(message.guild.id)
