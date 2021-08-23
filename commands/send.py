@@ -77,6 +77,10 @@ class Send(commands.Cog):
                 status = True
                 await ctx.send("You can not send a message to a user who has their Disconym DMs closed", hidden=True)
 
+            elif "http://" in input_message or "https://" in input_message or "www." in input_message or "discord.gg" in input_message or ".gg/" in input_message:
+                status = True
+                await ctx.send("You can't send links in this command", hidden=True)
+
         else:
             if ctx.author.id in user_cache:
                 status = True
@@ -105,6 +109,10 @@ class Send(commands.Cog):
             elif Database.dms_check(target.id) == False:
                 status = True
                 await ctx.send("You can not send a message to a user who has their Disconym DMs closed")
+
+            elif "http://" in input_message or "https://" in input_message or "www." in input_message or "discord.gg" in input_message or ".gg/" in input_message:
+                status = True
+                await ctx.send("You can't send links in this command", hidden=True)
 
         if status == False:
             try:
