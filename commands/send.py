@@ -11,7 +11,7 @@ user_cache = []
 
 with open('config.json',) as f:
     config = json.load(f)
-    logs_channel = config["channels"][0]["logs_channel"]
+    logs_channel_id = config["channels"][0]["logs_channel"]
 
 class Send(commands.Cog):
 
@@ -42,38 +42,69 @@ class Send(commands.Cog):
     @commands.command(aliases=["s", "dm"], description="Send an anonymous message to a user")
     @commands.dm_only()
     async def send(self, ctx, target: discord.Member, *, input_message):
-        await self.send_command(ctx, target, input_message)
+        await self.send_command(ctx=ctx, target=target, input_message=input_message)
 
     async def send_command(self, ctx, target: discord.Member, *, input_message):
         status = False
+        logs_channel = self.client.get_channel(logs_channel_id)
 
-        if ctx.author.id in user_cache:
-            status = True
-            await ctx.send("Please wait before sending another message.", hidden=True)
+        if isinstance(ctx, SlashContext):
+            if ctx.author.id in user_cache:
+                status = True
+                await ctx.send("Please wait before sending another message.", hidden=True)
 
-        elif ctx.author == target:
-            status = True
-            await ctx.send("You can't send messages to yourself", hidden=True)
+            elif ctx.author == target:
+                status = True
+                await ctx.send("You can't send messages to yourself", hidden=True)
 
-        elif input_message == None:
-            status = True
-            await ctx.send("You can not send an empty message", hidden=True)
+            elif input_message == None:
+                status = True
+                await ctx.send("You can not send an empty message", hidden=True)
 
-        elif Database.check_blacklist(ctx.author.id) == True:
-            status = True
-            await ctx.send("You are blacklisted from sending Disconym messages", hidden=True)
+            elif Database.check_blacklist(ctx.author.id) == True:
+                status = True
+                await ctx.send("You are blacklisted from sending Disconym messages", hidden=True)
 
-        elif Database.check_ignored(ctx.author.id, target.id) == 1:
-            status = True
-            await ctx.send("You can not send message to user who is in your ignored list", hidden=True)
-            
-        elif Database.check_ignored(ctx.author.id, target.id) == 2:
-            status = True
-            await ctx.send("You can not send message to user who is ignoring you", hidden=True)
+            elif Database.check_ignored(ctx.author.id, target.id) == 1:
+                status = True
+                await ctx.send("You can not send message to user who is in your ignored list", hidden=True)
+                
+            elif Database.check_ignored(ctx.author.id, target.id) == 2:
+                status = True
+                await ctx.send("You can not send message to user who is ignoring you", hidden=True)
 
-        elif Database.dms_check(target.id) == False:
-            status = True
-            await ctx.send("You can not send a message to a user who has their Disconym DMs closed", hidden=True)
+            elif Database.dms_check(target.id) == False:
+                status = True
+                await ctx.send("You can not send a message to a user who has their Disconym DMs closed", hidden=True)
+
+        else:
+            if ctx.author.id in user_cache:
+                status = True
+                await ctx.send("Please wait before sending another message.")
+
+            elif ctx.author == target:
+                status = True
+                await ctx.send("You can't send messages to yourself")
+
+            elif input_message == None:
+                status = True
+                await ctx.send("You can not send an empty message")
+
+            elif Database.check_blacklist(ctx.author.id) == True:
+                status = True
+                await ctx.send("You are blacklisted from sending Disconym messages")
+
+            elif Database.check_ignored(ctx.author.id, target.id) == 1:
+                status = True
+                await ctx.send("You can not send message to user who is in your ignored list")
+                
+            elif Database.check_ignored(ctx.author.id, target.id) == 2:
+                status = True
+                await ctx.send("You can not send message to user who is ignoring you")
+
+            elif Database.dms_check(target.id) == False:
+                status = True
+                await ctx.send("You can not send a message to a user who has their Disconym DMs closed")
 
         if status == False:
             try:
@@ -95,9 +126,15 @@ class Send(commands.Cog):
                 try:
                     await target_dm.send(embed=new_msg_embed)
                 except:
-                    await ctx.send(f"Failed to send a message to {target.mention}", hidden=True)
+                    if isinstance(ctx, SlashContext):
+                        await ctx.send(f"Failed to send a message to {target.mention}", hidden=True)
+                    else:
+                        await ctx.send(f"Failed to send a message to {target.mention}")
 
-                await ctx.send(f"Message to {target.mention} has been delivered successfully", hidden=True)
+                if isinstance(ctx, SlashContext):
+                    await ctx.send(f"Message to {target.mention} has been delivered successfully", hidden=True)
+                else:
+                    await ctx.send(f"Message to {target.mention} has been delivered successfully")
 
                 embed=discord.Embed(color=0x169cdf)
                 embed.add_field(name="Message data", value=f"Author profile - {ctx.author.mention}\nAuthor name - `{ctx.author.name}`\nAuthor ID - `{ctx.author.id}`\n━━━━━━━━━━━━━━━\nRecipient profile - {target.mention}\nRecipient name - `{target.name}`\nRecipient ID - `{target.id}`", inline=False)
@@ -113,7 +150,10 @@ class Send(commands.Cog):
 
 
             except:
-                await ctx.send("Failed to send message to that user\nMake sure their DMs are opened and that it is not a bot", hidden=True)
+                if isinstance(ctx, SlashContext):
+                    await ctx.send("Failed to send message to that user\nMake sure their DMs are opened and that it is not a bot", hidden=True)
+                else:
+                    await ctx.send("Failed to send message to that user\nMake sure their DMs are opened and that it is not a bot")
 
                 
 def setup(client):

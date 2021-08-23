@@ -10,7 +10,7 @@ from discord_slash.utils.manage_commands import create_option
 user_cache = []
 with open('config.json',) as f:
     config = json.load(f)
-    reports_channel = config["channels"][1]["reports_channel"]
+    reports_channel_id = config["channels"][1]["reports_channel"]
 
 class Report(commands.Cog):
 
@@ -46,6 +46,7 @@ class Report(commands.Cog):
             await ctx.send("Please wait before submitting another report")
 
         else:
+            reports_channel = self.client.get_channel(reports_channel_id)
             user_cache.append(ctx.author.id)
             author = ctx.author
             pfp = author.avatar_url
