@@ -26,6 +26,8 @@
 
 # Disconym
 
+## Repo archived as discord.py is discontinued
+
 ## Features
 
 - Send feature: sends your input message to a selected user
