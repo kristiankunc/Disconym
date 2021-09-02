@@ -11,22 +11,21 @@
     <img src="https://img.shields.io/website-up-down-green-red/http/cv.lbesson.qc.to.svg" alt="discord - users online" />
   </a>
   <img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg">
-  <img src="https://img.shields.io/discord/849290134809608212.svg?color=7289da&label=Discord%20server&logo=discord&style=flat-square)](https://discord.gg/6YYF68zzPK)">
 </p>
 
 <h3 align="center">
-  <a href="https://discord.gg/6YYF68zzPK">Discord server</a>
+  <a href="https://discord.gg/6YYF68zzPK">Discord server - deleted</a>
   <span> · </span>
-  <a href="https://discord.gg/123456">Bot invite - <i>soon</i></a>
+  <a href="https://discord.gg/123456">Bot invite - <i>soon (no) </i></a>
   <span> · </span>
-  <a href="https://kristn.tech">Website - <i>soon</i></a>
+  <a href="https://kristn.tech">Website - <i>soon (no)</i></a>
 </h3>
 
 ---
 
 # Disconym
 
-## Repo archived as discord.py is discontinued
+##  - - - - - Repo archived as discord.py is discontinued - - - - - 
 
 ## Features
 
